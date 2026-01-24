@@ -3,7 +3,7 @@ import path from 'node:path'
 import { PNG } from 'pngjs'
 
 const OUT_DIR = path.resolve('public/icons')
-const sizes = [192, 512]
+const sizes = [32, 192, 512]
 
 const colors = {
   background: [11, 13, 18],
