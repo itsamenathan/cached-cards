@@ -38,3 +38,19 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Notify Discord (success)
+        if: ${{ success() }}
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"✅ Cached Cards deploy succeeded: ${{ steps.deployment.outputs.page_url }}\\nCommit: ${{ github.sha }}\\nAuthor: ${{ github.actor }}\\nMessage: ${{ github.event.head_commit.message }}\"}" \
+            "$DISCORD_WEBHOOK_URL"
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - name: Notify Discord (failure)
+        if: ${{ failure() }}
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"❌ Cached Cards deploy failed.\\nCommit: ${{ github.sha }}\\nAuthor: ${{ github.actor }}\\nMessage: ${{ github.event.head_commit.message }}\\nCheck GitHub Actions logs.\"}" \
+            "$DISCORD_WEBHOOK_URL"
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
