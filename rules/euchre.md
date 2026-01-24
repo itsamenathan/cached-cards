@@ -7,6 +7,7 @@ max_players: 4
 difficulty: "Medium"
 category: "Trick-Taking"
 tags: ["partnership", "trump", "bidding"]
+deck: "24-card (9 through Ace)"
 ---
 
 # Euchre

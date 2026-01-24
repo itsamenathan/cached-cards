@@ -7,6 +7,7 @@ max_players: 2
 difficulty: "Easy"
 category: "Battle"
 tags: ["classic", "kids", "luck"]
+deck: "Standard 52-card"
 ---
 
 # War

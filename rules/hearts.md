@@ -7,6 +7,7 @@ max_players: 6
 difficulty: "Medium"
 category: "Trick-Taking"
 tags: ["classic", "strategy", "trick-taking"]
+deck: "Standard 52-card"
 ---
 
 # Hearts

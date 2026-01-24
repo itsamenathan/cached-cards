@@ -7,6 +7,7 @@ max_players: 6
 difficulty: "Medium"
 category: "Matching"
 tags: ["classic", "family", "draw-and-discard"]
+deck: "Standard 52-card"
 ---
 
 # Rummy

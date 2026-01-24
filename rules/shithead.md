@@ -7,6 +7,7 @@ max_players: 5
 difficulty: "Medium"
 category: "Beating"
 tags: ["shedding", "classic", "table-cards"]
+deck: "Standard 52-card"
 ---
 
 # Shithead

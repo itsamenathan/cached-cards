@@ -7,6 +7,7 @@ max_players: 4
 difficulty: "Medium"
 category: "Trick-Taking"
 tags: ["partnership", "bidding", "classic"]
+deck: "Standard 52-card"
 ---
 
 # Spades

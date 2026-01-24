@@ -51,6 +51,7 @@ export default function App() {
             difficulty: data.difficulty || 'Unknown',
             category: data.category || 'General',
             tags: formatTags(data.tags),
+            deck: data.deck || '',
             content,
           }
         })
@@ -372,7 +373,7 @@ export default function App() {
                 <p>{rule.shortDescription}</p>
                 <div className="rule-meta">
                   <span>{rule.playersLabel}</span>
-                  <span>{rule.category}</span>
+                  <span>{rule.deck || rule.category}</span>
                 </div>
               </button>
             ))}

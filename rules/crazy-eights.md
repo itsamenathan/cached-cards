@@ -7,6 +7,7 @@ max_players: 7
 difficulty: "Easy"
 category: "Shedding"
 tags: ["wild", "family", "quick"]
+deck: "Standard 52-card"
 ---
 
 # Crazy Eights

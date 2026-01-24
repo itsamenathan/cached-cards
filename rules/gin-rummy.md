@@ -7,6 +7,7 @@ max_players: 2
 difficulty: "Hard"
 category: "Matching"
 tags: ["duel", "strategic", "draw-and-discard"]
+deck: "Standard 52-card"
 ---
 
 # Gin Rummy

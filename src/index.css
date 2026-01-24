@@ -393,6 +393,7 @@ select {
   margin: 12px 0 18px;
 }
 
+
 .tag {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -454,5 +455,6 @@ select {
     position: sticky;
     top: 32px;
   }
+
 
 }
