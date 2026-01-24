@@ -46,20 +46,13 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,md,json}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'document',
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'pages',
-            },
-          },
-          {
-            urlPattern: ({ url }) => url.pathname.startsWith('/rules/') && url.pathname.endsWith('.md'),
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'rules',
             },
           },
         ],

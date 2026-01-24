@@ -15,7 +15,6 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [playerFilter, setPlayerFilter] = useState('Any')
   const [status, setStatus] = useState('loading')
-  const [errorMessage, setErrorMessage] = useState('')
   const [installPrompt, setInstallPrompt] = useState(null)
   const [isInstalled, setIsInstalled] = useState(false)
   const [selectedTags, setSelectedTags] = useState([])
@@ -23,47 +22,48 @@ export default function App() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [theme, setTheme] = useState('dark')
-  const baseUrl = import.meta.env.BASE_URL || '/'
+  const ruleModules = useMemo(
+    () =>
+      import.meta.glob('/rules/*.md', {
+        eager: true,
+        as: 'raw',
+      }),
+    [],
+  )
   const detailRef = useRef(null)
 
   useEffect(() => {
     let isMounted = true
 
-    const loadRules = async () => {
+    const loadRules = () => {
       try {
-        const indexResponse = await fetch(`${baseUrl}rules/index.json`)
-        if (!indexResponse.ok) throw new Error('Missing rules index')
-        const files = await indexResponse.json()
-        const entries = await Promise.all(
-          files.map(async (file) => {
-            const response = await fetch(`${baseUrl}rules/${file}`)
-            if (!response.ok) throw new Error(`Missing rule ${file}`)
-            const raw = await response.text()
-            const { data, content } = matter(raw)
-            return {
-              id: toSlug(file),
-              slug: file,
-              title: data.title || 'Untitled',
-              shortDescription: data.short_description || '',
-              playersLabel: data.players || '',
-              minPlayers: Number(data.min_players || 0),
-              maxPlayers: Number(data.max_players || 0),
-              difficulty: data.difficulty || 'Unknown',
-              category: data.category || 'General',
-              tags: formatTags(data.tags),
-              content,
-            }
-          }),
-        )
+        const entries = Object.entries(ruleModules).map(([path, raw]) => {
+          const filename = path.split('/').pop() || 'unknown.md'
+          const { data, content } = matter(raw)
+          return {
+            id: toSlug(filename),
+            slug: filename,
+            title: data.title || 'Untitled',
+            shortDescription: data.short_description || '',
+            playersLabel: data.players || '',
+            minPlayers: Number(data.min_players || 0),
+            maxPlayers: Number(data.max_players || 0),
+            difficulty: data.difficulty || 'Unknown',
+            category: data.category || 'General',
+            tags: formatTags(data.tags),
+            content,
+          }
+        })
+
+        entries.sort((a, b) => a.title.localeCompare(b.title))
 
         if (isMounted) {
           setRules(entries)
           setActiveRuleId(entries[0]?.id ?? null)
           setStatus('ready')
         }
-      } catch (error) {
+      } catch (_) {
         if (isMounted) {
-          setErrorMessage(error instanceof Error ? error.message : 'Unknown error')
           setStatus('error')
         }
       }
@@ -342,10 +342,7 @@ export default function App() {
               <div className="state">Loading the library…</div>
             )}
             {status === 'error' && (
-              <div className="state">
-                Couldn&apos;t load the rules.
-                {errorMessage ? ` (${errorMessage})` : ''}
-              </div>
+              <div className="state">Couldn&apos;t load the rules.</div>
             )}
             {status === 'ready' && filteredRules.length === 0 && (
               <div className="state">No games match those filters.</div>
