@@ -1,12 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { execSync } from 'node:child_process'
+
+const buildDate = process.env.VITE_BUILD_DATE || new Date().toISOString().slice(0, 10)
+let gitSha = 'unknown'
+if (process.env.GITHUB_SHA) {
+  gitSha = process.env.GITHUB_SHA.slice(0, 7)
+} else {
+  try {
+    gitSha = execSync('git rev-parse --short HEAD').toString().trim()
+  } catch (_) {
+    gitSha = 'unknown'
+  }
+}
 
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
   define: {
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+    __BUILD_DATE__: JSON.stringify(buildDate),
+    __GIT_SHA__: JSON.stringify(gitSha),
   },
   plugins: [
     react(),

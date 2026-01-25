@@ -463,7 +463,23 @@ export default function App() {
         >
           Report an issue
         </a>
-        <span className="footer-version">v{__APP_VERSION__}</span>
+        <span className="footer-version">
+          v{__BUILD_DATE__}
+          {__GIT_SHA__ !== 'unknown' && (
+            <>
+              {' '}
+              ·{' '}
+              <a
+                className="footer-commit"
+                href={`https://github.com/itsamenathan/cached-cards/commit/${__GIT_SHA__}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {__GIT_SHA__}
+              </a>
+            </>
+          )}
+        </span>
       </footer>
     </div>
   )

@@ -24,6 +24,8 @@ jobs:
           node-version: 20
           cache: "npm"
       - run: npm ci
+      - name: Set build date
+        run: echo "VITE_BUILD_DATE=$(date -u +%F)" >> $GITHUB_ENV
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
