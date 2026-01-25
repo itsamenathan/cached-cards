@@ -20,13 +20,14 @@ export default function App() {
   const [selectedTags, setSelectedTags] = useState([])
   const [recentIds, setRecentIds] = useState([])
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
   const [theme, setTheme] = useState('dark')
+  const [viewMode, setViewMode] = useState('library')
   const ruleModules = useMemo(
     () =>
       import.meta.glob('/rules/*.md', {
         eager: true,
-        as: 'raw',
+        query: '?raw',
+        import: 'default',
       }),
     [],
   )
@@ -174,7 +175,7 @@ export default function App() {
     if (!activeRule) return
     setRecentIds((prev) => {
       const next = [activeRule.id, ...prev.filter((id) => id !== activeRule.id)]
-      const trimmed = next.slice(0, 5)
+      const trimmed = next.slice(0, 3)
       window.localStorage.setItem(
         'cached-cards-recent',
         JSON.stringify(trimmed),
@@ -182,6 +183,31 @@ export default function App() {
       return trimmed
     })
   }, [activeRule])
+
+  useEffect(() => {
+    const updateView = () => {
+      if (window.innerWidth >= 900) {
+        setViewMode('split')
+      } else {
+        setViewMode('library')
+      }
+    }
+
+    updateView()
+    window.addEventListener('resize', updateView)
+    return () => window.removeEventListener('resize', updateView)
+  }, [])
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (window.innerWidth < 900) {
+        setViewMode('library')
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
 
   const handleInstall = async () => {
     if (!installPrompt) return
@@ -198,7 +224,6 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div>
-          <p className="eyebrow">Offline Card Library</p>
           <h1>Cached Cards</h1>
           <p className="subhead">
             Rules ready for game night, even when the Wi-Fi isn&apos;t.
@@ -216,17 +241,18 @@ export default function App() {
         </div>
       </header>
 
-      <main className="app-main">
-        <section className="library">
+      <main className={`app-main ${viewMode === 'detail' ? 'detail-only' : ''}`}>
+        <section className={`library ${viewMode === 'detail' ? 'hidden' : ''}`}>
           <div className="library-topbar">
-            <button
-              type="button"
-              className="icon-button"
-              onClick={() => setSearchOpen((open) => !open)}
-              aria-label="Toggle search"
-            >
-              🔍
-            </button>
+            <div className="search-mini">
+              <input
+                id="search"
+                type="search"
+                placeholder="Search"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </div>
             <button
               type="button"
               className="filter-pill"
@@ -249,7 +275,14 @@ export default function App() {
                   <button
                     key={rule.id}
                     className={`recent-chip${rule.id === activeRuleId ? ' active' : ''}`}
-                    onClick={() => setActiveRuleId(rule.id)}
+                    onClick={() => {
+                      setActiveRuleId(rule.id)
+                      if (window.innerWidth < 900) {
+                        setFiltersOpen(false)
+                        setViewMode('detail')
+                        window.history.pushState({ view: 'detail' }, '')
+                      }
+                    }}
                   >
                     <span className="recent-initials">
                       {rule.title
@@ -264,26 +297,6 @@ export default function App() {
                 ))}
               </div>
             )}
-          </div>
-
-          <div className={`search-drawer${searchOpen ? ' open' : ''}`}>
-            <div className="search-field">
-              <label htmlFor="search">Search</label>
-              <input
-                id="search"
-                type="search"
-                placeholder="Find a game by name"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </div>
-            <button
-              type="button"
-              className="drawer-close"
-              onClick={() => setSearchOpen(false)}
-            >
-              Close
-            </button>
           </div>
 
           <div className={`filters-drawer${filtersOpen ? ' open' : ''}`}>
@@ -356,13 +369,8 @@ export default function App() {
                   setActiveRuleId(rule.id)
                   if (window.innerWidth < 900) {
                     setFiltersOpen(false)
-                    setSearchOpen(false)
-                  }
-                  if (window.innerWidth < 900 && detailRef.current) {
-                    detailRef.current.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start',
-                    })
+                    setViewMode('detail')
+                    window.history.pushState({ view: 'detail' }, '')
                   }
                 }}
               >
@@ -380,9 +388,21 @@ export default function App() {
           </div>
         </section>
 
-        <section className="detail" ref={detailRef}>
+        <section
+          className={`detail ${viewMode === 'detail' ? 'active' : ''}`}
+          ref={detailRef}
+        >
           {activeRule ? (
             <>
+              {viewMode === 'detail' && (
+                <button
+                  type="button"
+                  className="back-button"
+                  onClick={() => setViewMode('library')}
+                >
+                  ← Back to library
+                </button>
+              )}
               <div className="detail-header">
                 <div>
                   <h2>{activeRule.title}</h2>
@@ -410,6 +430,37 @@ export default function App() {
           )}
         </section>
       </main>
+      <footer className="app-footer">
+        <a
+          className="footer-icon"
+          href="https://github.com/itsamenathan/cached-cards"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Cached Cards on GitHub"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 2C6.48 2 2 6.58 2 12.26c0 4.55 2.87 8.41 6.84 9.78.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.63-3.37-1.37-3.37-1.37-.46-1.21-1.12-1.53-1.12-1.53-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.58 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.74 0 0 .84-.28 2.75 1.05.8-.23 1.66-.35 2.52-.35.86 0 1.72.12 2.52.35 1.91-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.48.1 2.74.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.59 5.04.36.33.68.98.68 1.98 0 1.43-.01 2.58-.01 2.93 0 .27.18.6.69.49 3.96-1.37 6.83-5.23 6.83-9.78C22 6.58 17.52 2 12 2z"
+            />
+          </svg>
+        </a>
+        <span className="footer-text">Cached Cards is open source</span>
+        <a
+          href="https://github.com/itsamenathan/cached-cards/blob/main/CONTRIBUTING.md"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Contribute a rule
+        </a>
+        <a
+          href="https://github.com/itsamenathan/cached-cards/issues"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Report an issue
+        </a>
+        <span className="footer-version">v{__APP_VERSION__}</span>
+      </footer>
     </div>
   )
 }
