@@ -32,6 +32,7 @@ export default function App() {
     [],
   )
   const detailRef = useRef(null)
+  const wasDesktopRef = useRef(window.innerWidth >= 900)
 
   useEffect(() => {
     let isMounted = true
@@ -186,11 +187,14 @@ export default function App() {
 
   useEffect(() => {
     const updateView = () => {
-      if (window.innerWidth >= 900) {
+      const isDesktop = window.innerWidth >= 900
+      if (isDesktop && !wasDesktopRef.current) {
         setViewMode('split')
-      } else {
+      }
+      if (!isDesktop && wasDesktopRef.current) {
         setViewMode('library')
       }
+      wasDesktopRef.current = isDesktop
     }
 
     updateView()
