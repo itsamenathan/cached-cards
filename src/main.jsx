@@ -13,12 +13,9 @@ if (!window.Buffer) {
 
 if (import.meta.env.PROD) {
   const script = document.createElement('script')
-  script.setAttribute(
-    'data-goatcounter',
-    'https://goatcounter.home.frcv.net/count',
-  )
-  script.async = true
-  script.src = '//goatcounter.home.frcv.net/count.js'
+  script.defer = true
+  script.setAttribute('data-domain', 'cachedcards.com')
+  script.src = 'https://vince.home.frcv.net/js/script.js'
   document.head.appendChild(script)
 }
 
