@@ -1,19 +1,21 @@
 ---
-title: "War"
-short_description: "Simple battle of high cards with all luck."
-players: "2 players"
+title: War
+short_description: Simple battle of high cards with all luck.
+players: 2 players
 min_players: 2
 max_players: 2
-difficulty: "Easy"
-category: "Battle"
-tags: ["classic", "kids", "luck"]
-deck: "Standard 52-card"
+difficulty: Easy
+tags:
+  - battle
+  - kids
+deck: Standard 52-card
 ---
 
 # War
 
 ## Goal
 Win all the cards by having the highest card in each battle.
+
 
 ## Setup
 - Use a standard 52-card deck.

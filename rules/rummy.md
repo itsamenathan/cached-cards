@@ -1,19 +1,21 @@
 ---
-title: "Rummy"
-short_description: "A classic game of melding sets and runs while shedding your hand."
-players: "2-6 players"
+title: Rummy
+short_description: A classic game of melding sets and runs while shedding your hand.
+players: 2-6 players
 min_players: 2
 max_players: 6
-difficulty: "Medium"
-category: "Matching"
-tags: ["classic", "family", "draw-and-discard"]
-deck: "Standard 52-card"
+difficulty: Medium
+tags:
+  - rummy
+  - classic
+deck: Standard 52-card
 ---
 
 # Rummy
 
 ## Goal
 Be the first player to get rid of all cards in your hand by forming **melds** (sets or runs).
+
 
 ## Setup
 - Use a standard 52-card deck.

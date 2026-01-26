@@ -1,19 +1,21 @@
 ---
-title: "Gin Rummy"
-short_description: "Two-player rummy variant focused on efficient melds and knocking."
-players: "2 players"
+title: Gin Rummy
+short_description: Two-player rummy variant focused on efficient melds and knocking.
+players: 2 players
 min_players: 2
 max_players: 2
-difficulty: "Hard"
-category: "Matching"
-tags: ["duel", "strategic", "draw-and-discard"]
-deck: "Standard 52-card"
+difficulty: Hard
+tags:
+  - rummy
+  - duel
+deck: Standard 52-card
 ---
 
 # Gin Rummy
 
 ## Goal
 Score points by forming melds and reducing **deadwood** (unmatched cards).
+
 
 ## Setup
 - Use a standard 52-card deck.

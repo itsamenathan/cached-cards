@@ -1,19 +1,21 @@
 ---
-title: "Hearts"
-short_description: "Avoid tricks with hearts and the queen of spades to keep your score low."
-players: "3-6 players"
+title: Hearts
+short_description: Avoid tricks with hearts and the queen of spades to keep your score low.
+players: 3-6 players
 min_players: 3
 max_players: 6
-difficulty: "Medium"
-category: "Trick-Taking"
-tags: ["classic", "strategy", "trick-taking"]
-deck: "Standard 52-card"
+difficulty: Medium
+tags:
+  - trick-taking
+  - classic
+deck: Standard 52-card
 ---
 
 # Hearts
 
 ## Goal
 Finish with the **lowest** score by avoiding hearts and the queen of spades.
+
 
 ## Setup
 - Use a standard 52-card deck.

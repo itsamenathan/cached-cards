@@ -1,19 +1,21 @@
 ---
-title: "Euchre"
-short_description: "Trick-taking game with trump selection and a small deck."
-players: "4 players"
+title: Euchre
+short_description: Trick-taking game with trump selection and a small deck.
+players: 4 players
 min_players: 4
 max_players: 4
-difficulty: "Medium"
-category: "Trick-Taking"
-tags: ["partnership", "trump", "bidding"]
-deck: "24-card (9 through Ace)"
+difficulty: Medium
+tags:
+  - trick-taking
+  - partnership
+deck: 24-card (9 through Ace)
 ---
 
 # Euchre
 
 ## Goal
 Be the first partnership to reach 10 points by taking tricks.
+
 
 ## Setup
 - Use a 24-card deck (9 through Ace in each suit).

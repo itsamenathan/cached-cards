@@ -1,19 +1,21 @@
 ---
-title: "Crazy Eights"
-short_description: "Fast-paced shedding game where eights are wild."
-players: "2-7 players"
+title: Crazy Eights
+short_description: Fast-paced shedding game where eights are wild.
+players: 2-8 players
 min_players: 2
-max_players: 7
-difficulty: "Easy"
-category: "Shedding"
-tags: ["wild", "family", "quick"]
-deck: "Standard 52-card"
+max_players: 8
+difficulty: Easy
+tags:
+  - shedding
+  - family
+deck: Standard 52-card
 ---
 
 # Crazy Eights
 
 ## Goal
-Be the first player to get rid of all your cards.
+Be the first player to get rid of all the cards in your hand.
+
 
 ## Setup
 - Use a standard 52-card deck.

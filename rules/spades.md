@@ -1,19 +1,21 @@
 ---
-title: "Spades"
-short_description: "Partnership trick-taking with bids and trump spades."
-players: "4 players"
+title: Spades
+short_description: Partnership trick-taking with bids and trump spades.
+players: 4 players
 min_players: 4
 max_players: 4
-difficulty: "Medium"
-category: "Trick-Taking"
-tags: ["partnership", "bidding", "classic"]
-deck: "Standard 52-card"
+difficulty: Medium
+tags:
+  - trick-taking
+  - partnership
+deck: Standard 52-card
 ---
 
 # Spades
 
 ## Goal
 Win tricks to meet or exceed your bid while avoiding overtricks.
+
 
 ## Setup
 - Use a standard 52-card deck.

@@ -52,7 +52,6 @@ export default function App() {
             minPlayers: Number(data.min_players || 0),
             maxPlayers: Number(data.max_players || 0),
             difficulty: data.difficulty || 'Unknown',
-            category: data.category || 'General',
             tags: formatTags(data.tags),
             deck: data.deck || '',
             content,
@@ -403,7 +402,13 @@ export default function App() {
                 <p>{rule.shortDescription}</p>
                 <div className="rule-meta">
                   <span>{rule.playersLabel}</span>
-                  <span>{rule.deck || rule.category}</span>
+                  <div className="rule-tags">
+                    {rule.tags.slice(0, 3).map((tag) => (
+                      <span key={tag} className="rule-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </button>
             ))}
@@ -433,7 +438,7 @@ export default function App() {
                 <div className="pill-group">
                   <span className="pill">{activeRule.playersLabel}</span>
                   <span className="pill">{activeRule.difficulty}</span>
-                  <span className="pill">{activeRule.category}</span>
+                  {activeRule.deck && <span className="pill">{activeRule.deck}</span>}
                 </div>
               </div>
               <div className="tags">

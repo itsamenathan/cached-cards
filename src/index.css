@@ -444,6 +444,22 @@ select {
   color: var(--text-subtle);
 }
 
+.rule-tags {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rule-tag {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px dashed var(--border);
+  color: var(--text-soft);
+  text-transform: lowercase;
+}
+
 .difficulty {
   font-size: 0.75rem;
   padding: 4px 10px;
@@ -480,6 +496,7 @@ select {
 .detail-header h2 {
   font-size: 1.8rem;
 }
+
 
 .pill-group {
   display: flex;

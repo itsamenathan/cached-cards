@@ -1,19 +1,21 @@
 ---
-title: "Shithead"
-short_description: "Beating game where you try not to be the last player with cards."
-players: "3-5 players"
+title: Shithead
+short_description: Beating game where you try not to be the last player with cards.
+players: 3-5 players
 min_players: 3
 max_players: 5
-difficulty: "Medium"
-category: "Beating"
-tags: ["shedding", "classic", "table-cards"]
-deck: "Standard 52-card"
+difficulty: Medium
+tags:
+  - shedding
+  - classic
+deck: Standard 52-card
 ---
 
 # Shithead
 
 ## Goal
 Avoid being the last player with cards.
+
 
 ## Setup
 - Use a standard 52-card deck.
