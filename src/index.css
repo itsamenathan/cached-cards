@@ -301,6 +301,38 @@ select {
   cursor: pointer;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 8, 12, 0.7);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 20;
+}
+
+.modal-card {
+  width: min(360px, 100%);
+  background: var(--bg-card-strong);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  color: var(--text);
+}
+
+.modal-card h3 {
+  font-size: 1.1rem;
+}
+
+.modal-card ol {
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
 .library-list {
   display: grid;
   gap: 12px;

@@ -17,6 +17,7 @@ export default function App() {
   const [status, setStatus] = useState('loading')
   const [installPrompt, setInstallPrompt] = useState(null)
   const [isInstalled, setIsInstalled] = useState(false)
+  const [showIosInstall, setShowIosInstall] = useState(false)
   const [selectedTags, setSelectedTags] = useState([])
   const [recentIds, setRecentIds] = useState([])
   const [filtersOpen, setFiltersOpen] = useState(false)
@@ -220,6 +221,18 @@ export default function App() {
     setInstallPrompt(null)
   }
 
+  const isIos = () => {
+    const ua = window.navigator.userAgent.toLowerCase()
+    return /iphone|ipad|ipod/.test(ua)
+  }
+
+  const isSafari = () => {
+    const ua = window.navigator.userAgent.toLowerCase()
+    return ua.includes('safari') && !ua.includes('crios') && !ua.includes('fxios')
+  }
+
+  const showIosButton = !installPrompt && !isInstalled && isIos() && isSafari()
+
   const toggleTheme = () => {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
   }
@@ -237,6 +250,11 @@ export default function App() {
           {installPrompt && !isInstalled && (
             <button className="install-btn" onClick={handleInstall}>
               Install App
+            </button>
+          )}
+          {showIosButton && (
+            <button className="install-btn" onClick={() => setShowIosInstall(true)}>
+              Install on iOS
             </button>
           )}
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
@@ -481,6 +499,21 @@ export default function App() {
           )}
         </span>
       </footer>
+      {showIosInstall && (
+        <div className="modal-backdrop" onClick={() => setShowIosInstall(false)}>
+          <div className="modal-card" onClick={(event) => event.stopPropagation()}>
+            <h3>Install on iPhone/iPad</h3>
+            <ol>
+              <li>Tap the Share button in Safari.</li>
+              <li>Select “Add to Home Screen”.</li>
+              <li>Tap Add.</li>
+            </ol>
+            <button className="drawer-close" onClick={() => setShowIosInstall(false)}>
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
