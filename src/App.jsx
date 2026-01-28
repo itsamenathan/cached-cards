@@ -23,6 +23,7 @@ export default function App() {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [theme, setTheme] = useState('dark')
   const [viewMode, setViewMode] = useState('library')
+  const [detailHighlight, setDetailHighlight] = useState(false)
   const ruleModules = useMemo(
     () =>
       import.meta.glob('/rules/*.md', {
@@ -174,6 +175,15 @@ export default function App() {
 
   useEffect(() => {
     if (!activeRule) return
+    if (detailRef.current) {
+      if (window.innerWidth >= 900) {
+        detailRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        setDetailHighlight(true)
+        window.setTimeout(() => setDetailHighlight(false), 900)
+      } else {
+        detailRef.current.scrollIntoView({ behavior: 'auto', block: 'start' })
+      }
+    }
     setRecentIds((prev) => {
       const next = [activeRule.id, ...prev.filter((id) => id !== activeRule.id)]
       const trimmed = next.slice(0, 3)
@@ -416,11 +426,13 @@ export default function App() {
         </section>
 
         <section
-          className={`detail ${viewMode === 'detail' ? 'active' : ''}`}
+          className={`detail ${viewMode === 'detail' ? 'active' : ''}${
+            detailHighlight ? ' highlight' : ''
+          }`}
           ref={detailRef}
         >
           {activeRule ? (
-            <>
+              <>
               {viewMode === 'detail' && (
                 <button
                   type="button"
@@ -435,23 +447,25 @@ export default function App() {
                   <h2>{activeRule.title}</h2>
                   <p>{activeRule.shortDescription}</p>
                 </div>
-                <div className="pill-group">
-                  <span className="pill">{activeRule.playersLabel}</span>
-                  <span className="pill">{activeRule.difficulty}</span>
-                  {activeRule.deck && <span className="pill">{activeRule.deck}</span>}
+                  <div className="pill-group">
+                    <span className="pill">{activeRule.playersLabel}</span>
+                    <span className="pill">{activeRule.difficulty}</span>
+                    {activeRule.deck && (
+                      <span className="pill">{activeRule.deck}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="tags">
-                {activeRule.tags.map((tag) => (
-                  <span key={tag} className="tag">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <article className="markdown">
-                <ReactMarkdown>{activeRule.content}</ReactMarkdown>
-              </article>
-            </>
+                <div className="tags">
+                  {activeRule.tags.map((tag) => (
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <article className="markdown">
+                  <ReactMarkdown>{activeRule.content}</ReactMarkdown>
+                </article>
+              </>
           ) : (
             <div className="state">Select a game to read the rules.</div>
           )}
