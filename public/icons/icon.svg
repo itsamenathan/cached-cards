@@ -1,20 +1,10 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="cardGlow" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f8f1df" />
-      <stop offset="100%" stop-color="#f2b27a" />
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="96" fill="#0b0d12" />
-  <rect x="96" y="96" width="320" height="384" rx="36" fill="url(#cardGlow)" />
-  <rect x="128" y="128" width="256" height="320" rx="28" fill="#101521" />
-  <path
-    d="M176 208h160v24H176zM176 264h96v24h-96zM176 320h128v24H176z"
-    fill="#f8f1df"
-  />
-  <circle cx="352" cy="320" r="44" fill="#f2b27a" />
-  <path
-    d="M352 300c-10 0-18 8-18 18s8 18 18 18 18-8 18-18-8-18-18-18z"
-    fill="#0b0d12"
-  />
+  <rect width="512" height="512" rx="96" fill="#0d111a" />
+  <rect x="136" y="88" width="240" height="336" rx="28" fill="#f8f1df" />
+  <rect x="156" y="110" width="200" height="292" rx="20" fill="#121826" />
+  <circle cx="186" cy="140" r="10" fill="#f2b27a" />
+  <circle cx="326" cy="372" r="10" fill="#f2b27a" />
+  <rect x="186" y="200" width="140" height="12" rx="6" fill="#f8f1df" />
+  <rect x="186" y="230" width="110" height="12" rx="6" fill="#f8f1df" />
+  <rect x="186" y="260" width="125" height="12" rx="6" fill="#f8f1df" />
 </svg>
