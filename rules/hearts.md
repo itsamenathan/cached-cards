@@ -10,30 +10,34 @@ tags:
   - classic
 deck: Standard 52-card
 ---
-
 # Hearts
 
 ## Goal
-Finish with the **lowest** score by avoiding hearts and the queen of spades.
+Finish with the lowest score by avoiding hearts and the queen of spades.
+
+## Key Terms
+- **Trick:** One card per player; highest card of the led suit wins.
+- **Lead:** The first card played to a trick; its suit must be followed.
+- **Follow suit:** If you have the led suit, you must play it.
+- **Break hearts:** Hearts can only be led after a heart is discarded.
 
 
 ## Setup
-- Use a standard 52-card deck.
-- Deal all cards evenly to players.
-
-## Passing (Optional for 4 players)
-- Each player selects 3 cards to pass left, right, or across (rotate each round).
+- Deal all cards to 4 players (13 each).
+- Commonly pass 3 cards (left, right, across, then no pass).
+- To find the first leader, everyone checks their own hand; the player holding the 2 of clubs leads the first trick.
 
 ## Trick Play
-1. The player with the 2 of clubs leads the first trick.
-2. Players must follow suit if possible.
-3. The highest card of the led suit wins the trick.
+- Players must follow suit if possible.
+- Hearts cannot be led until “broken” (a heart is discarded on another suit).
 
 ## Scoring
 - Each heart = 1 point.
 - Queen of spades = 13 points.
-- **Shooting the moon:** If you take all hearts and the queen of spades, you score 0 and everyone else scores 26.
+- **Shooting the moon:** take all point cards, score 0 and others score 26.
+
+## Example Trick
+Clubs are led, so you must play a club if you have one. If you have no clubs, you may discard a heart, which breaks hearts.
 
 ## End
-- Play continues until a player reaches 100 points (or an agreed target).
-- Lowest score wins.
+- Play to a target score (often 100). Lowest score wins.

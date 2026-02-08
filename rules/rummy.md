@@ -10,31 +10,40 @@ tags:
   - classic
 deck: Standard 52-card
 ---
-
 # Rummy
 
 ## Goal
-Be the first player to get rid of all cards in your hand by forming **melds** (sets or runs).
+Form melds (sets and runs) and be the first to get rid of all cards in your hand.
+
+## Key Terms
+- **Meld:** A valid group of cards laid down together.
+- **Set:** Three or four of the same rank.
+- **Run:** Three or more consecutive cards of the same suit.
+- **Deadwood:** Unmatched cards left in your hand for scoring.
 
 
 ## Setup
-- Use a standard 52-card deck.
-- Deal 7 cards to each player (10 cards each for 2 players).
-- Place the remaining cards face down as the **stock** and flip the top card to start the **discard pile**.
+- Deal 7 cards each (10 cards each for 2 players).
+- Place the remaining cards face down as the stock and turn one card face up to start the discard pile.
 
 ## Melds
-- **Set:** 3 or 4 cards of the same rank (e.g., 7-7-7).
-- **Run:** 3 or more consecutive cards of the same suit (e.g., 4-5-6 of hearts).
+- **Set:** 3 or 4 cards of the same rank.
+- **Run:** 3+ consecutive cards of the same suit.
+- Aces are low (A-2-3 is valid; Q-K-A is not).
 
 ## Turn Order
-1. **Draw** the top card from the stock or discard pile.
-2. **Meld** any sets or runs to the table (optional).
-3. **Discard** one card to end your turn.
+1. Draw the top card from the stock **or** the discard pile.
+2. Lay down any melds (optional) and add to existing melds (optional).
+3. Discard one card to end your turn.
 
 ## Going Out
-- If you can form melds with all cards in your hand, discard your last card to **go out**.
-- The round ends immediately when someone goes out.
+- When all your cards are melded, discard your last card to go out.
+- The round ends immediately.
 
-## Scoring (Optional)
-- Cards left in hand count against you: face cards = 10, aces = 1, number cards = face value.
+## Scoring (common)
+- Face cards: 10 points, Aces: 1 point, Number cards: face value.
 - Lowest total score after agreed number of rounds wins.
+
+
+## Example Turn
+You draw the 7♣ from the stock, lay down 7♣-7♦-7♥ as a set, then discard the 2♠.

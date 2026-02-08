@@ -10,23 +10,29 @@ tags:
   - classic
 deck: 36-card (6 through Ace)
 ---
-
 # Durak
 
 ## Goal
-Avoid being the last player holding cards.
+Avoid being the last player with cards.
+
+## Key Terms
+- **Attack/Defend:** One player leads; the defender must beat each card.
+- **Trump:** Suit that beats any non-trump card.
+- **Beat:** Cover a card with a higher same-suit card or a trump.
 
 
 ## Setup
-- Use a 36-card deck.
-- Deal 6 cards to each player.
-- Reveal the bottom card to set trump.
+- Use a 36-card deck (6 through Ace).
+- Deal 6 cards to each player and reveal a trump suit.
 
 ## Play
-- An attacker plays a card; the defender must beat it with higher same-suit or trump.
-- If the defender succeeds, they become the next attacker.
-- If they fail, they pick up all cards.
+- Attacker plays a card; defender must beat it (higher same suit or trump).
+- Attacker can add cards of ranks already on the table.
+- If defender succeeds, the cards are discarded; if not, defender takes all.
+- Players draw back up to 6 cards from the stock.
+
+## Example Turn
+Attacker plays 9♣. Defender beats with J♣ or any trump. If they can’t, they pick up all cards.
 
 ## End
-- Players drop out when they run out of cards.
-- The last player with cards is the durak.
+- Players with no cards drop out; the last remaining player is the durak.

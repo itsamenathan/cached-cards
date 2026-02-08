@@ -10,22 +10,33 @@ tags:
   - partnership
 deck: 48-card double deck (9-A in each suit)
 ---
-
 # Pinochle
 
 ## Goal
-Win tricks and score melds to reach the target score.
+Score points from melds and trick-taking; first partnership to target wins.
+
+## Key Terms
+- **Meld:** Scoring combinations revealed from your hand.
+- **Marriage:** King and Queen of the same suit.
+- **Pinochle:** Jack of diamonds + Queen of spades.
 
 
 ## Setup
-- Deal 12 cards to each player.
-- Bidding determines trump.
+- Use a 48-card deck (two each of A, 10, K, Q, J, 9).
+- Deal 12 cards each; remaining cards form the stock or kitty (by variant).
+
+## Bidding & Trump
+- Players bid to choose trump; winning bidder declares trump.
+- The winning bidder (or their partner, by variant) leads the first trick.
 
 ## Melds
-- Sets, runs, and the pinochle (Jack of diamonds + Queen of spades).
+- Score for runs, marriages (K+Q), pinochle (J♦+Q♠), and arounds.
 
-## Play
-- Must follow suit if possible; trump may be required.
+## Trick Play
+- Must follow suit if possible; trump wins if played.
+
+## Example Trick
+Spades are trump. A trump 9 can win over any non‑trump lead if no higher trump is played.
 
 ## End
-- Score melds and trick points; first partnership to target wins.
+- Add meld points and trick points to score.

@@ -10,26 +10,38 @@ tags:
   - betting
 deck: Standard 52-card (often multiple decks)
 ---
-
 # Blackjack
 
 ## Goal
-Have a hand value closer to 21 than the dealer without exceeding 21.
+Beat the dealer by getting as close to 21 as possible without busting.
+In blackjack, the **dealer** represents the house; players compare their hand against the dealer, not against each other.
+
+## Key Terms
+- **Hit:** Take another card.
+- **Stand:** Take no more cards.
+- **Double:** Double your bet for exactly one more card.
+- **Split:** Separate a pair into two hands.
+- **Bust:** Your hand total exceeds 21 and you lose the round.
 
 
 ## Setup
-- Deal two cards to each player and two to the dealer (one face up).
-
-## Turn Order
-1. Players act in order: **Hit** (take a card) or **Stand** (stop).
-2. If you go over 21, you bust.
-3. After all players finish, the dealer reveals their hand and draws to 17.
+- Each player and the dealer receive two cards; one dealer card is face up.
 
 ## Card Values
-- 2–10 are face value.
-- Face cards are 10.
-- Aces are 1 or 11.
+- 2–10 = face value, face cards = 10, Aces = 1 or 11.
+
+## Player Actions
+- **Hit** to take another card.
+- **Stand** to hold.
+- Optional: **Double** (one more card), **Split** (pairs), **Surrender**.
+
+## Dealer Play
+- Dealer hits until 17 or higher (house rules vary on soft 17).
+
+## Example Hand
+You have 10 and 6 (16). You hit and receive a 4 (total 20), then stand.
 
 ## End
-- Compare each player’s hand to the dealer.
-- Blackjack (Ace + 10) usually pays a bonus.
+- Busts lose immediately. Otherwise highest total wins.
+- A natural blackjack usually beats any 21 and pays a bonus.
+- Ties with the dealer are usually a push (no win or loss).

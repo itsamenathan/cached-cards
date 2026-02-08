@@ -10,51 +10,40 @@ tags:
   - duel
 deck: Standard 52-card
 ---
-
 # Gin Rummy
 
 ## Goal
-Score points by forming melds and reducing **deadwood** (unmatched cards).
+Create melds and minimize deadwood (unmatched cards) to score points.
+
+## Key Terms
+- **Meld:** A set or run laid down together.
+- **Deadwood:** Unmatched cards left in your hand.
+- **Knock:** End the round when deadwood is low enough.
+- **Gin:** End the round with zero deadwood.
 
 
 ## Setup
-- Use a standard 52-card deck.
 - Deal 10 cards to each player.
 - Turn one card face up to start the discard pile; the rest form the stock.
 
 ## Melds
-- **Set:** 3 or 4 cards of the same rank.
-- **Run:** 3+ consecutive cards of the same suit.
-- A card can only be in one meld.
-- Aces are **low only** (A-2-3 is valid; Q-K-A is not).
+- **Set:** 3 or 4 of a kind.
+- **Run:** 3+ consecutive cards in the same suit.
+- Aces are low only.
 
 ## Turn Order
-1. **Draw** from the stock or discard pile.
-2. **Discard** one card to the discard pile.
-   - If you took the top discard this turn, you must discard a **different** card.
+1. Draw from stock or take the top discard.
+2. Discard one card face up (you cannot discard the card you just took from the pile).
 
-### First Turn
-- The non-dealer chooses to take the face-up card or pass.
-- If they pass, the dealer may take it or pass.
-- If both pass, the non-dealer draws from the stock.
+## Knocking & Gin
+- You may **knock** when your deadwood totals 10 points or fewer.
+- To knock, discard face down, then reveal melds and deadwood.
+- **Gin** = 0 deadwood; earns a bonus.
 
-## Knocking and Gin
-- You may **knock** when your deadwood totals 10 points or less.
-- Knock by discarding **face down**, then laying out your melds and deadwood.
-- If your deadwood is 0, you have **Gin** and earn a bonus.
+## Scoring (common)
+- Face cards 10, Aces 1, Number cards face value.
+- Knocker scores the difference; undercut gives the opponent a bonus.
 
-### Laying Off
-- If you **knock** (not gin), your opponent may lay off deadwood onto your melds.
-- If you **gin**, your opponent may not lay off.
 
-## Scoring
-- Number cards are face value.
-- Face cards are 10 points.
-- Aces are 1 point.
-- If the knocker has less deadwood, they score the **difference**.
-- If the knocker ties or loses, the opponent **undercuts** and scores the difference **+ bonus**.
-- A gin hand scores a **gin bonus** plus the opponent’s deadwood.
-
-## End
-- Play multiple rounds to a target score (commonly 100 points).
-- If the stock runs down to two cards and no one knocks, the hand is void and redealt.
+## Example Turn
+You draw the 5♣ from the stock, discard the 9♦, and now your deadwood totals 8 so you can knock on your next turn.

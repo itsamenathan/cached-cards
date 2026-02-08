@@ -10,39 +10,33 @@ tags:
   - classic
 deck: Standard 52-card
 ---
-
 # Shithead
 
 ## Goal
-Avoid being the last player with cards.
+Get rid of all your cards; the last player with cards loses.
+
+## Key Terms
+- **Pile:** The face-up play pile in the center.
+- **Pick up:** Taking the pile when you can’t play.
+- **Clear:** Remove the pile from play with a special card.
 
 
 ## Setup
-- Use a standard 52-card deck.
-- Deal each player 3 face-down cards, 3 face-up cards on top of those, and a hand of 3 cards.
-- Place the remaining cards face down as the stock.
-- Players may swap any number of hand cards with their face-up cards before play begins.
+- Deal 3 face-down, 3 face-up, and 3 in hand to each player.
+- Players may swap hand cards with face-up cards before play.
 
-## Card Rank
-- From high to low: 2 (special), A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3.
+## Play
+- Play a card equal to or higher than the top of the pile (same rank allowed).
+- If you can’t play, you pick up the pile.
+- When your hand is empty, play your face-up cards, then face-down cards.
 
-## Turn Order
-- The first player is the one with a 3 face-up (or the lowest face-up card if no 3s).
-- On your turn, play one or more cards of the same rank onto the discard pile.
-- Your play must be **equal to or higher** than the top card(s) in the pile.
-- If you have fewer than 3 cards in hand and the stock has cards, draw up to 3.
-- If you cannot (or choose not to) play, you must pick up the entire pile into your hand.
+## Special Cards (common)
+- **2:** resets the pile (any card can follow).
+- **10:** clears the pile; same player leads again.
+- **Four of a kind:** clears the pile.
 
-## Special Cards
-- **2:** Wild reset. Can be played on any card; any card can be played on a 2.
-- **10:** Clears the pile. Remove the discard pile from play and take another turn.
-- **Four of a kind:** If the top of the pile becomes four cards of the same rank, the pile clears and the same player goes again.
-
-## Endgame
-- When your hand is empty and the stock is gone, play from your face-up cards.
-- Once those are gone, play your face-down cards one at a time, **blind**.
-- If a face-down card can’t be played, you must pick up the pile.
+## Example Turn
+Top of pile is 8. You play an 8 or higher; if you can’t, you pick up the pile into your hand.
 
 ## End
-- Players drop out when they have no cards left.
-- The last player holding cards loses and is the "shithead".
+- First player out wins; last player is the shithead.

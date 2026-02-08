@@ -10,22 +10,27 @@ tags:
   - kids
 deck: Standard 52-card (remove one queen)
 ---
-
 # Old Maid
 
 ## Goal
-Avoid being the player left holding the unpaired queen.
+Avoid being left with the unpaired queen (Old Maid).
+
+## Key Terms
+- **Pair:** Two cards of the same rank you can discard.
+- **Old Maid:** The unpaired queen left at the end.
 
 
 ## Setup
 - Remove one queen from the deck.
-- Deal all cards.
-- Discard any pairs from your hand.
+- Deal all cards; discard any pairs in your hand.
 
-## Turn Order
-1. Draw a random card from the player to your left.
-2. If you make a pair, discard it.
-3. Play continues around the table.
+## Play
+- The dealer starts by offering their hand face down to the player on their left.
+- That player draws one card, discards any pairs, and then offers their hand to the next player.
+- Players who run out of cards are safe.
+
+## Example Turn
+You draw one card from the player on your left, form a pair, and discard it before passing your hand to the next player.
 
 ## End
-- The last player holding the odd queen loses.
+- The player left holding the unpaired queen loses.

@@ -10,26 +10,25 @@ tags:
   - kids
 deck: Standard 52-card
 ---
-
 # War
 
 ## Goal
-Win all the cards by having the highest card in each battle.
+Win all the cards.
+
+## Key Terms
+- **Battle:** Each player flips a card; higher card wins the pile.
+- **War:** Tie-breaker where extra cards decide the winner.
 
 
 ## Setup
-- Use a standard 52-card deck.
-- Deal all cards evenly to the two players.
+- Deal all cards evenly; players keep them face down.
 
-## Battle
-1. Each player flips the top card of their pile.
-2. Higher card wins both cards and places them at the bottom of their pile.
-3. If cards tie, declare **war**.
+## Play
+- Both players reveal the top card; higher card takes both to the bottom of their pile.
+- Ties trigger **war**: each player places one card face down, then one face up. Higher face up wins all cards.
 
-## War
-- Each player places three cards face down and a fourth face up.
-- The higher face-up card wins all cards in the war.
-- If another tie occurs, repeat the war.
+## Example Battle
+You flip a 9 and your opponent flips a 9. You each place one face‑down card, then flip a new card to decide the war.
 
-## Winning
-- A player wins when they have all the cards.
+## End
+- A player wins when they collect all cards (or when time is called).

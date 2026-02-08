@@ -10,23 +10,29 @@ tags:
   - kids
 deck: Standard 52-card
 ---
-
 # Go Fish
 
 ## Goal
-Collect the most pairs by the end of the game.
+Make the most books (sets of four of a kind).
+
+## Key Terms
+- **Book:** Four cards of the same rank.
+- **Ask:** Request a rank you already hold.
 
 
 ## Setup
-- Deal 5 cards each (7 cards for 2 players).
+- Deal 5 cards each (7 each for 2 players).
 - Place the rest face down as the stock.
 
 ## Turn Order
-1. Ask a player for a rank you have in hand.
-2. If they have it, they must give all cards of that rank and you go again.
-3. If not, “Go Fish” and draw one card.
-4. When you form a pair, lay it down.
+1. Ask a specific player for a rank you already hold.
+2. If they have it, they give all those cards; you go again.
+3. If not, “Go Fish” and draw one card; if it matches, go again.
+4. Lay down any completed books.
+
+## Example Turn
+You hold two 6s and ask Alex for 6s. If Alex has them, you take all 6s and go again; otherwise you draw.
 
 ## End
-- The game ends when all pairs are made.
-- Most pairs wins.
+- Game ends when the stock is empty or players run out of cards.
+- Most books wins.

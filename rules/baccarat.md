@@ -10,25 +10,33 @@ tags:
   - betting
 deck: Standard 52-card (often multiple decks)
 ---
-
 # Baccarat
 
 ## Goal
-Bet on whether the Player or Banker hand will be closer to 9.
+Bet on whether the Player hand or Banker hand will be closer to 9.
+“Player” and “Banker” are just hand names; you are not required to play a special role.
 
+## Key Terms
+- **Player/Banker:** The two hands being compared (not actual players).
+- **Natural:** A two-card total of 8 or 9, ending the hand.
+- **Third-card rules:** Fixed rules that decide if a third card is drawn.
 
-## Setup
-- Two hands are dealt: Player and Banker.
-- Each hand gets two cards.
 
 ## Card Values
-- 2–9 are face value.
-- 10s and face cards are 0.
-- Aces are 1.
-- Only the last digit counts (e.g., 15 = 5).
+- 2–9 face value, 10 and face cards = 0, Ace = 1.
+- Only the last digit counts (e.g., 15 counts as 5).
 
-## Drawing Rules
-- The Player and Banker may draw a third card based on fixed rules.
+## Deal
+- Two cards are dealt to Player and Banker.
+- If either totals 8 or 9, it’s a natural and the hand ends.
+
+## Third-Card Rules
+- The Player draws on 0–5 and stands on 6–7.
+- Banker draws by a fixed table based on its total and the Player’s third card.
+- Players do not make hit/stand decisions; the draw rules are automatic.
+
+## Example Hand
+Player has 7 and 2 (9) — a natural. The hand ends immediately.
 
 ## End
-- The hand closest to 9 wins.
+- Higher total wins; ties push most bets.

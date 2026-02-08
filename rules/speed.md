@@ -10,22 +10,27 @@ tags:
   - duel
 deck: Standard 52-card
 ---
-
 # Speed
 
 ## Goal
-Be the first to get rid of all your cards.
+Get rid of all your cards first.
+
+## Key Terms
+- **Center piles:** Shared piles you play onto.
+- **In sequence:** One rank higher or lower than the top card.
+- **Simultaneous play:** Players act at the same time.
 
 
 ## Setup
-- Each player gets 20 cards in a draw pile.
-- Create five face-down piles for each player, with one card face up on top.
-- Place two cards face up in the center as play piles.
+- Each player has a 15-card stock, a 5-card hand, and two face-down piles for the center.
 
 ## Play
 - Both players play simultaneously.
-- Play a card that is one rank higher or lower than a center card.
-- If stuck, flip a new card from your draw pile onto the center.
+- Play a card one rank higher or lower than either center card.
+- When stuck, flip a new center card from your stock pile.
+
+## Example Play
+The center card is 7. You can play a 6 or 8 from your hand immediately without waiting for the other player.
 
 ## End
-- First player to play all cards wins.
+- First player to empty stock and hand wins.

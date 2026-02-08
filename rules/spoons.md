@@ -10,25 +10,30 @@ tags:
   - fast
 deck: Standard 52-card
 ---
-
 # Spoons
 
 ## Goal
-Be first to get four of a kind and grab a spoon.
+Be first to collect four of a kind and grab a spoon.
+
+## Key Terms
+- **Four of a kind:** Needed before grabbing a spoon.
+- **Spoon grab:** The moment everyone tries to take a spoon.
 
 
 ## Setup
 - Place one fewer spoon than players in the center.
 - Deal 4 cards to each player.
 
-## Turn Order
-- All players pass one card face down to the left at the same time.
+## Play
+- Everyone passes one card to the left simultaneously.
 - Keep passing quickly until you have four of a kind.
 
 ## Spoons
 - Once you have four of a kind, quietly take a spoon.
-- When one spoon is taken, everyone grabs.
+- Everyone else grabs; the player without a spoon gets a letter.
+
+## Example Turn
+You pass a 9♠ left and receive a 9♥. Now you have four 9s and quietly take a spoon.
 
 ## End
-- The player without a spoon gets a letter.
-- Play until someone spells SPOONS (or agreed limit).
+- Game ends when a player spells SPOONS (or agreed limit).
