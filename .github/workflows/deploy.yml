@@ -40,19 +40,34 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-      - name: Notify Discord (success)
+      - name: Notify Zulip (success)
         if: ${{ success() }}
-        run: |
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ Cached Cards deploy succeeded: ${{ steps.deployment.outputs.page_url }}\\nCommit: ${{ github.sha }}\\nAuthor: ${{ github.actor }}\\nMessage: ${{ github.event.head_commit.message }}\"}" \
-            "$DISCORD_WEBHOOK_URL"
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      - name: Notify Discord (failure)
+        uses: zulip/github-actions-zulip/send-message@v1
+        with:
+          api-key: ${{ secrets.ZULIP_API_KEY }}
+          email: ${{ secrets.ZULIP_EMAIL }}
+          organization-url: ${{ secrets.ZULIP_ORG_URL }}
+          type: "stream"
+          to: ${{ secrets.ZULIP_STREAM }}
+          topic: ${{ secrets.ZULIP_TOPIC }}
+          content: |
+            ✅ Cached Cards deploy succeeded: ${{ steps.deployment.outputs.page_url }}
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            Message: ${{ github.event.head_commit.message }}
+      - name: Notify Zulip (failure)
         if: ${{ failure() }}
-        run: |
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ Cached Cards deploy failed.\\nCommit: ${{ github.sha }}\\nAuthor: ${{ github.actor }}\\nMessage: ${{ github.event.head_commit.message }}\\nCheck GitHub Actions logs.\"}" \
-            "$DISCORD_WEBHOOK_URL"
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        uses: zulip/github-actions-zulip/send-message@v1
+        with:
+          api-key: ${{ secrets.ZULIP_API_KEY }}
+          email: ${{ secrets.ZULIP_EMAIL }}
+          organization-url: ${{ secrets.ZULIP_ORG_URL }}
+          type: "stream"
+          to: ${{ secrets.ZULIP_STREAM }}
+          topic: ${{ secrets.ZULIP_TOPIC }}
+          content: |
+            ❌ Cached Cards deploy failed.
+            Commit: ${{ github.sha }}
+            Author: ${{ github.actor }}
+            Message: ${{ github.event.head_commit.message }}
+            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}

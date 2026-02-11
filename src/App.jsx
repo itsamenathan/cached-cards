@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import matter from 'gray-matter'
 import ReactMarkdown from 'react-markdown'
 
@@ -10,11 +11,9 @@ const formatTags = (tags) =>
 const toSlug = (filename) => filename.replace(/\.md$/, '')
 
 export default function App() {
-  const [rules, setRules] = useState([])
-  const [activeRuleId, setActiveRuleId] = useState(null)
+  const isClient = typeof window !== 'undefined'
   const [query, setQuery] = useState('')
   const [playerFilter, setPlayerFilter] = useState('Any')
-  const [status, setStatus] = useState('loading')
   const [installPrompt, setInstallPrompt] = useState(null)
   const [isInstalled, setIsInstalled] = useState(false)
   const [showIosInstall, setShowIosInstall] = useState(false)
@@ -24,6 +23,8 @@ export default function App() {
   const [theme, setTheme] = useState('dark')
   const [viewMode, setViewMode] = useState('library')
   const [detailHighlight, setDetailHighlight] = useState(false)
+  const navigate = useNavigate()
+  const { slug } = useParams()
   const ruleModules = useMemo(
     () =>
       import.meta.glob('/rules/*.md', {
@@ -33,52 +34,40 @@ export default function App() {
       }),
     [],
   )
-  const detailRef = useRef(null)
-  const wasDesktopRef = useRef(window.innerWidth >= 900)
-
-  useEffect(() => {
-    let isMounted = true
-
-    const loadRules = () => {
-      try {
-        const entries = Object.entries(ruleModules).map(([path, raw]) => {
-          const filename = path.split('/').pop() || 'unknown.md'
-          const { data, content } = matter(raw)
-          return {
-            id: toSlug(filename),
-            slug: filename,
-            title: data.title || 'Untitled',
-            shortDescription: data.short_description || '',
-            playersLabel: data.players || '',
-            minPlayers: Number(data.min_players || 0),
-            maxPlayers: Number(data.max_players || 0),
-            difficulty: data.difficulty || 'Unknown',
-            tags: formatTags(data.tags),
-            deck: data.deck || '',
-            content,
-          }
-        })
-
-        entries.sort((a, b) => a.title.localeCompare(b.title))
-
-        if (isMounted) {
-          setRules(entries)
-          setActiveRuleId(entries[0]?.id ?? null)
-          setStatus('ready')
-        }
-      } catch (_) {
-        if (isMounted) {
-          setStatus('error')
-        }
+  const rules = useMemo(() => {
+    const entries = Object.entries(ruleModules).map(([path, raw]) => {
+      const filename = path.split('/').pop() || 'unknown.md'
+      const { data, content } = matter(raw)
+      return {
+        id: toSlug(filename),
+        slug: filename,
+        title: data.title || 'Untitled',
+        shortDescription: data.short_description || '',
+        playersLabel: data.players || '',
+        minPlayers: Number(data.min_players || 0),
+        maxPlayers: Number(data.max_players || 0),
+        difficulty: data.difficulty || 'Unknown',
+        tags: formatTags(data.tags),
+        deck: data.deck || '',
+        content,
       }
-    }
+    })
 
-    loadRules()
-
-    return () => {
-      isMounted = false
+    entries.sort((a, b) => a.title.localeCompare(b.title))
+    return entries
+  }, [ruleModules])
+  const initialActiveRuleId = useMemo(() => {
+    if (rules.length === 0) return null
+    if (slug) {
+      const match = rules.find((rule) => rule.id === slug)
+      return match ? match.id : rules[0].id
     }
-  }, [])
+    return rules[0].id
+  }, [rules, slug])
+  const [activeRuleId, setActiveRuleId] = useState(initialActiveRuleId)
+  const status = rules.length ? 'ready' : 'error'
+  const detailRef = useRef(null)
+  const wasDesktopRef = useRef(isClient ? window.innerWidth >= 900 : true)
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem('cached-cards-theme')
@@ -174,6 +163,18 @@ export default function App() {
   const activeRule = filteredRules.find((rule) => rule.id === activeRuleId)
 
   useEffect(() => {
+    if (rules.length === 0) return
+    if (slug) {
+      const match = rules.find((rule) => rule.id === slug)
+      setActiveRuleId(match ? match.id : rules[0].id)
+      return
+    }
+    if (!activeRuleId) {
+      setActiveRuleId(rules[0].id)
+    }
+  }, [slug, rules])
+
+  useEffect(() => {
     if (!activeRule) return
     if (detailRef.current) {
       if (window.innerWidth >= 900) {
@@ -196,13 +197,13 @@ export default function App() {
   }, [activeRule])
 
   useEffect(() => {
+    if (!isClient) return
     const updateView = () => {
       const isDesktop = window.innerWidth >= 900
-      if (isDesktop && !wasDesktopRef.current) {
+      if (isDesktop) {
         setViewMode('split')
-      }
-      if (!isDesktop && wasDesktopRef.current) {
-        setViewMode('library')
+      } else {
+        setViewMode(slug ? 'detail' : 'library')
       }
       wasDesktopRef.current = isDesktop
     }
@@ -210,18 +211,7 @@ export default function App() {
     updateView()
     window.addEventListener('resize', updateView)
     return () => window.removeEventListener('resize', updateView)
-  }, [])
-
-  useEffect(() => {
-    const handlePopState = () => {
-      if (window.innerWidth < 900) {
-        setViewMode('library')
-      }
-    }
-
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [])
+  }, [slug, isClient])
 
   const handleInstall = async () => {
     if (!installPrompt) return
@@ -231,11 +221,13 @@ export default function App() {
   }
 
   const isIos = () => {
+    if (!isClient) return false
     const ua = window.navigator.userAgent.toLowerCase()
     return /iphone|ipad|ipod/.test(ua)
   }
 
   const isSafari = () => {
+    if (!isClient) return false
     const ua = window.navigator.userAgent.toLowerCase()
     return ua.includes('safari') && !ua.includes('crios') && !ua.includes('fxios')
   }
@@ -308,11 +300,11 @@ export default function App() {
                     className={`recent-chip${rule.id === activeRuleId ? ' active' : ''}`}
                     onClick={() => {
                       setActiveRuleId(rule.id)
-                      if (window.innerWidth < 900) {
+                      if (isClient && window.innerWidth < 900) {
                         setFiltersOpen(false)
                         setViewMode('detail')
-                        window.history.pushState({ view: 'detail' }, '')
                       }
+                      navigate(`/rules/${rule.id}`)
                     }}
                   >
                     <span className="recent-initials">
@@ -398,11 +390,11 @@ export default function App() {
                 className={`rule-card${rule.id === activeRuleId ? ' active' : ''}`}
                 onClick={() => {
                   setActiveRuleId(rule.id)
-                  if (window.innerWidth < 900) {
+                  if (isClient && window.innerWidth < 900) {
                     setFiltersOpen(false)
                     setViewMode('detail')
-                    window.history.pushState({ view: 'detail' }, '')
                   }
+                  navigate(`/rules/${rule.id}`)
                 }}
               >
                 <div className="rule-card-header">
@@ -437,7 +429,10 @@ export default function App() {
                 <button
                   type="button"
                   className="back-button"
-                  onClick={() => setViewMode('library')}
+                  onClick={() => {
+                    setViewMode('library')
+                    navigate('/')
+                  }}
                 >
                   ← Back to library
                 </button>
