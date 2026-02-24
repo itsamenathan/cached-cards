@@ -562,6 +562,14 @@ select {
   gap: 6px;
 }
 
+.onboarding {
+  gap: 12px;
+}
+
+.onboarding h2 {
+  font-size: 1.8rem;
+}
+
 .state {
   padding: 16px;
   border-radius: 14px;

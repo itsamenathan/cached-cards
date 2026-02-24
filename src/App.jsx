@@ -62,7 +62,7 @@ export default function App() {
       const match = rules.find((rule) => rule.id === slug)
       return match ? match.id : rules[0].id
     }
-    return rules[0].id
+    return null
   }, [rules, slug])
   const [activeRuleId, setActiveRuleId] = useState(initialActiveRuleId)
   const status = rules.length ? 'ready' : 'error'
@@ -155,7 +155,7 @@ export default function App() {
 
   useEffect(() => {
     if (filteredRules.length === 0) return
-    if (!activeRuleId || !filteredRules.some((rule) => rule.id === activeRuleId)) {
+    if (activeRuleId && !filteredRules.some((rule) => rule.id === activeRuleId)) {
       setActiveRuleId(filteredRules[0].id)
     }
   }, [filteredRules, activeRuleId])
@@ -169,9 +169,7 @@ export default function App() {
       setActiveRuleId(match ? match.id : rules[0].id)
       return
     }
-    if (!activeRuleId) {
-      setActiveRuleId(rules[0].id)
-    }
+    setActiveRuleId(null)
   }, [slug, rules])
 
   useEffect(() => {
@@ -462,7 +460,20 @@ export default function App() {
                 </article>
               </>
           ) : (
-            <div className="state">Select a game to read the rules.</div>
+            <div className="onboarding markdown">
+              <h2>Welcome to Cached Cards</h2>
+              <p>
+                Pick any game from the library to open its rules. Everything is
+                cached so you can still read during spotty Wi-Fi or airplane mode.
+              </p>
+              <h3>How to use it</h3>
+              <ul>
+                <li>Search by game name from the top bar.</li>
+                <li>Use Filters to narrow by player count or tags.</li>
+                <li>Open a rule card to read setup, flow, and scoring.</li>
+                <li>Use Install App for quick home screen access.</li>
+              </ul>
+            </div>
           )}
         </section>
       </main>

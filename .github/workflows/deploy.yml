@@ -40,34 +40,34 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-      - name: Notify Zulip (success)
+      - name: Notify Gotify (success)
         if: ${{ success() }}
-        uses: zulip/github-actions-zulip/send-message@v1
-        with:
-          api-key: ${{ secrets.ZULIP_API_KEY }}
-          email: ${{ secrets.ZULIP_EMAIL }}
-          organization-url: ${{ secrets.ZULIP_ORG_URL }}
-          type: "stream"
-          to: ${{ secrets.ZULIP_STREAM }}
-          topic: ${{ secrets.ZULIP_TOPIC }}
-          content: |
-            ✅ Cached Cards deploy succeeded: ${{ steps.deployment.outputs.page_url }}
-            Commit: ${{ github.sha }}
-            Author: ${{ github.actor }}
-            Message: ${{ github.event.head_commit.message }}
-      - name: Notify Zulip (failure)
+        run: |
+          message=$(cat <<'EOF'
+          ✅ Cached Cards deploy succeeded: ${{ steps.deployment.outputs.page_url }}
+          Commit: ${{ github.sha }}
+          Author: ${{ github.actor }}
+          Message: ${{ github.event.head_commit.message || 'workflow_dispatch' }}
+          EOF
+          )
+          curl --fail --silent --show-error \
+            -X POST "${{ secrets.GOTIFY_URL }}/message?token=${{ secrets.GOTIFY_TOKEN }}" \
+            -F "title=Cached Cards deploy succeeded" \
+            -F "priority=5" \
+            --form-string "message=$message"
+      - name: Notify Gotify (failure)
         if: ${{ failure() }}
-        uses: zulip/github-actions-zulip/send-message@v1
-        with:
-          api-key: ${{ secrets.ZULIP_API_KEY }}
-          email: ${{ secrets.ZULIP_EMAIL }}
-          organization-url: ${{ secrets.ZULIP_ORG_URL }}
-          type: "stream"
-          to: ${{ secrets.ZULIP_STREAM }}
-          topic: ${{ secrets.ZULIP_TOPIC }}
-          content: |
-            ❌ Cached Cards deploy failed.
-            Commit: ${{ github.sha }}
-            Author: ${{ github.actor }}
-            Message: ${{ github.event.head_commit.message }}
-            Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          message=$(cat <<'EOF'
+          ❌ Cached Cards deploy failed.
+          Commit: ${{ github.sha }}
+          Author: ${{ github.actor }}
+          Message: ${{ github.event.head_commit.message || 'workflow_dispatch' }}
+          Run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EOF
+          )
+          curl --fail --silent --show-error \
+            -X POST "${{ secrets.GOTIFY_URL }}/message?token=${{ secrets.GOTIFY_TOKEN }}" \
+            -F "title=Cached Cards deploy failed" \
+            -F "priority=8" \
+            --form-string "message=$message"
