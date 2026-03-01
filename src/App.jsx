@@ -12,15 +12,38 @@ const toSlug = (filename) => filename.replace(/\.md$/, '')
 
 export default function App() {
   const isClient = typeof window !== 'undefined'
+  const getInitialTheme = () => {
+    if (!isClient) return 'dark'
+    const storedTheme = window.localStorage.getItem('cached-cards-theme')
+    if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme
+    return window.matchMedia('(prefers-color-scheme: light)').matches
+      ? 'light'
+      : 'dark'
+  }
+  const getInitialRecentIds = () => {
+    if (!isClient) return []
+    try {
+      const stored = JSON.parse(
+        window.localStorage.getItem('cached-cards-recent') || '[]',
+      )
+      return Array.isArray(stored) ? stored : []
+    } catch {
+      return []
+    }
+  }
+  const getInitialInstalled = () =>
+    isClient &&
+    (window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true)
   const [query, setQuery] = useState('')
   const [playerFilter, setPlayerFilter] = useState('Any')
   const [installPrompt, setInstallPrompt] = useState(null)
-  const [isInstalled, setIsInstalled] = useState(false)
+  const [isInstalled, setIsInstalled] = useState(getInitialInstalled)
   const [showIosInstall, setShowIosInstall] = useState(false)
   const [selectedTags, setSelectedTags] = useState([])
-  const [recentIds, setRecentIds] = useState([])
+  const [recentIds, setRecentIds] = useState(getInitialRecentIds)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [theme, setTheme] = useState('dark')
+  const [theme, setTheme] = useState(getInitialTheme)
   const [viewMode, setViewMode] = useState('library')
   const [detailHighlight, setDetailHighlight] = useState(false)
   const navigate = useNavigate()
@@ -56,7 +79,7 @@ export default function App() {
     entries.sort((a, b) => a.title.localeCompare(b.title))
     return entries
   }, [ruleModules])
-  const initialActiveRuleId = useMemo(() => {
+  const activeRuleId = useMemo(() => {
     if (rules.length === 0) return null
     if (slug) {
       const match = rules.find((rule) => rule.id === slug)
@@ -64,37 +87,14 @@ export default function App() {
     }
     return null
   }, [rules, slug])
-  const [activeRuleId, setActiveRuleId] = useState(initialActiveRuleId)
   const status = rules.length ? 'ready' : 'error'
   const detailRef = useRef(null)
   const wasDesktopRef = useRef(isClient ? window.innerWidth >= 900 : true)
 
   useEffect(() => {
-    const storedTheme = window.localStorage.getItem('cached-cards-theme')
-    if (storedTheme === 'light' || storedTheme === 'dark') {
-      setTheme(storedTheme)
-    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      setTheme('light')
-    }
-  }, [])
-
-  useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     window.localStorage.setItem('cached-cards-theme', theme)
   }, [theme])
-
-  useEffect(() => {
-    try {
-      const stored = JSON.parse(
-        window.localStorage.getItem('cached-cards-recent') || '[]',
-      )
-      if (Array.isArray(stored)) {
-        setRecentIds(stored)
-      }
-    } catch (_) {
-      setRecentIds([])
-    }
-  }, [])
 
   useEffect(() => {
     const handleBeforeInstall = (event) => {
@@ -106,9 +106,6 @@ export default function App() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstall)
     window.addEventListener('appinstalled', handleInstalled)
-
-    const standalone = window.matchMedia('(display-mode: standalone)').matches
-    setIsInstalled(standalone || window.navigator.standalone === true)
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall)
@@ -153,45 +150,35 @@ export default function App() {
     })
   }
 
-  useEffect(() => {
-    if (filteredRules.length === 0) return
-    if (activeRuleId && !filteredRules.some((rule) => rule.id === activeRuleId)) {
-      setActiveRuleId(filteredRules[0].id)
-    }
-  }, [filteredRules, activeRuleId])
-
-  const activeRule = filteredRules.find((rule) => rule.id === activeRuleId)
-
-  useEffect(() => {
-    if (rules.length === 0) return
-    if (slug) {
-      const match = rules.find((rule) => rule.id === slug)
-      setActiveRuleId(match ? match.id : rules[0].id)
-      return
-    }
-    setActiveRuleId(null)
-  }, [slug, rules])
+  const activeRule = activeRuleId
+    ? (filteredRules.find((rule) => rule.id === activeRuleId) ??
+      filteredRules[0] ??
+      null)
+    : null
 
   useEffect(() => {
     if (!activeRule) return
     if (detailRef.current) {
       if (window.innerWidth >= 900) {
         detailRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        setDetailHighlight(true)
+        window.requestAnimationFrame(() => setDetailHighlight(true))
         window.setTimeout(() => setDetailHighlight(false), 900)
       } else {
         detailRef.current.scrollIntoView({ behavior: 'auto', block: 'start' })
       }
     }
-    setRecentIds((prev) => {
-      const next = [activeRule.id, ...prev.filter((id) => id !== activeRule.id)]
-      const trimmed = next.slice(0, 3)
-      window.localStorage.setItem(
-        'cached-cards-recent',
-        JSON.stringify(trimmed),
-      )
-      return trimmed
-    })
+    const timeoutId = window.setTimeout(() => {
+      setRecentIds((prev) => {
+        const next = [activeRule.id, ...prev.filter((id) => id !== activeRule.id)]
+        const trimmed = next.slice(0, 3)
+        window.localStorage.setItem(
+          'cached-cards-recent',
+          JSON.stringify(trimmed),
+        )
+        return trimmed
+      })
+    }, 0)
+    return () => window.clearTimeout(timeoutId)
   }, [activeRule])
 
   useEffect(() => {
@@ -297,7 +284,6 @@ export default function App() {
                     key={rule.id}
                     className={`recent-chip${rule.id === activeRuleId ? ' active' : ''}`}
                     onClick={() => {
-                      setActiveRuleId(rule.id)
                       if (isClient && window.innerWidth < 900) {
                         setFiltersOpen(false)
                         setViewMode('detail')
@@ -387,7 +373,6 @@ export default function App() {
                 key={rule.id}
                 className={`rule-card${rule.id === activeRuleId ? ' active' : ''}`}
                 onClick={() => {
-                  setActiveRuleId(rule.id)
                   if (isClient && window.innerWidth < 900) {
                     setFiltersOpen(false)
                     setViewMode('detail')

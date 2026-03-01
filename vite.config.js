@@ -10,7 +10,7 @@ if (process.env.GITHUB_SHA) {
 } else {
   try {
     gitSha = execSync('git rev-parse --short HEAD').toString().trim()
-  } catch (_) {
+  } catch {
     gitSha = 'unknown'
   }
 }
@@ -18,6 +18,10 @@ if (process.env.GITHUB_SHA) {
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
+  },
   define: {
     __BUILD_DATE__: JSON.stringify(buildDate),
     __GIT_SHA__: JSON.stringify(gitSha),
