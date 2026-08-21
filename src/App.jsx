@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import matter from 'gray-matter'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const PLAYER_FILTERS = ['Any', 2, 3, 4, 5, 6]
 
@@ -9,6 +10,16 @@ const formatTags = (tags) =>
   Array.isArray(tags) ? tags.map((tag) => tag.toString()) : []
 
 const toSlug = (filename) => filename.replace(/\.md$/, '')
+
+// Lookup tables in the rules can be wider than a phone screen, so each one
+// scrolls horizontally inside its own container.
+const markdownComponents = {
+  table: ({ children }) => (
+    <div className="table-scroll">
+      <table>{children}</table>
+    </div>
+  ),
+}
 
 export default function App() {
   const isClient = typeof window !== 'undefined'
@@ -441,7 +452,12 @@ export default function App() {
                   ))}
                 </div>
                 <article className="markdown">
-                  <ReactMarkdown>{activeRule.content}</ReactMarkdown>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={markdownComponents}
+                  >
+                    {activeRule.content}
+                  </ReactMarkdown>
                 </article>
               </>
           ) : (

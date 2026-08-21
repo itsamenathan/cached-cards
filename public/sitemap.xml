@@ -31,6 +31,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cachedcards.com/rules/cheat/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cachedcards.com/rules/crazy-eights/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -42,6 +47,11 @@
   </url>
   <url>
     <loc>https://cachedcards.com/rules/durak/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cachedcards.com/rules/egyptian-ratscrew/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -61,7 +71,17 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cachedcards.com/rules/golf/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cachedcards.com/rules/hearts/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cachedcards.com/rules/kings-in-the-corner/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -102,6 +122,11 @@
   </url>
   <url>
     <loc>https://cachedcards.com/rules/slapjack/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cachedcards.com/rules/snap/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
