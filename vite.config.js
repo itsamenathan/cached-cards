@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 import { execSync } from 'node:child_process'
+import { themeColors } from './src/themes.js'
 
 const buildDate = process.env.VITE_BUILD_DATE || new Date().toISOString().slice(0, 10)
 let gitSha = 'unknown'
@@ -14,6 +15,18 @@ if (process.env.GITHUB_SHA) {
     gitSha = 'unknown'
   }
 }
+
+// The pre-paint script in index.html needs every theme's browser chrome colour
+// before any module has loaded, so the registry is inlined into it here rather
+// than duplicated by hand.
+const themeBootstrap = () => ({
+  name: 'cached-cards-theme-bootstrap',
+  transformIndexHtml: {
+    order: 'pre',
+    handler: (html) =>
+      html.replaceAll('__THEME_COLORS__', JSON.stringify(themeColors())),
+  },
+})
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -33,6 +46,7 @@ export default defineConfig({
     __GIT_SHA__: JSON.stringify(gitSha),
   },
   plugins: [
+    themeBootstrap(),
     react(),
     VitePWA({
       registerType: 'autoUpdate',

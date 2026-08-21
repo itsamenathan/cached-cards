@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import App from './App.jsx'
+import { THEMES, THEME_STORAGE_KEY } from './themes.js'
 
 function renderApp(entry) {
   return render(
@@ -86,5 +87,68 @@ describe('App routing and persistence', () => {
       )
       expect(stored[0]).toBe('blackjack')
     })
+  })
+})
+
+describe('theme picker', () => {
+  const openPicker = async (user) => {
+    await user.click(screen.getByRole('button', { name: /^Theme:/ }))
+    return screen.getByRole('menu', { name: 'Theme' })
+  }
+
+  it('applies and stores a theme chosen from the picker', async () => {
+    const user = userEvent.setup()
+    renderApp('/')
+
+    await openPicker(user)
+    await user.click(screen.getByRole('menuitemradio', { name: 'Dracula' }))
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dracula')
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('dracula')
+    expect(screen.queryByRole('menu', { name: 'Theme' })).not.toBeInTheDocument()
+  })
+
+  it('restores a stored theme before the picker is ever opened', () => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, 'nord')
+    renderApp('/')
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('nord')
+    expect(screen.getByRole('button', { name: 'Theme: Nord' })).toBeInTheDocument()
+  })
+
+  // A stored id that no longer exists must not leave the page unstyled.
+  it('falls back to following the system for an unknown stored theme', () => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, 'a-theme-we-removed')
+    renderApp('/')
+
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark')
+    expect(window.localStorage.getItem(THEME_STORAGE_KEY)).toBe('system')
+  })
+
+  // Each swatch previews a palette by carrying that theme's data-theme, so the
+  // menu shows real colours instead of a second copy of them in JavaScript.
+  it('previews every theme with a swatch bound to that palette', async () => {
+    const user = userEvent.setup()
+    renderApp('/')
+
+    await openPicker(user)
+
+    for (const theme of THEMES) {
+      expect(
+        document.querySelector(`.theme-swatch[data-theme='${theme.id}']`),
+      ).toBeInTheDocument()
+    }
+  })
+
+  it('closes on Escape and hands focus back to the button', async () => {
+    const user = userEvent.setup()
+    renderApp('/')
+
+    const button = screen.getByRole('button', { name: /^Theme:/ })
+    await openPicker(user)
+    await user.keyboard('{Escape}')
+
+    expect(screen.queryByRole('menu', { name: 'Theme' })).not.toBeInTheDocument()
+    expect(button).toHaveFocus()
   })
 })

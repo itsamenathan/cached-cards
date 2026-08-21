@@ -36,4 +36,12 @@ export default defineConfig([
       globals: globals.node,
     },
   },
+  {
+    // The palette test reads index.css off disk, so it needs the Node globals
+    // on top of the browser ones jsdom provides.
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
 ])

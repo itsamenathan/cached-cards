@@ -1,8 +1,17 @@
 :root {
-  color-scheme: dark;
   font-family: "Space Grotesk", "Trebuchet MS", "Gill Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
+}
+
+/* Every palette is a `[data-theme]` block rather than `:root[data-theme]`, so
+   the picker can drop the attribute on a swatch element and have that swatch
+   inherit the real colours of the theme it is previewing. The bare `:root`
+   pairing keeps the dark palette as the fallback when the pre-paint script in
+   index.html cannot run. */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
   background-color: #0b0d12;
   color: #f8f1df;
   --bg: #0b0d12;
@@ -11,6 +20,8 @@
   --bg-card-strong: rgba(15, 18, 28, 0.95);
   --bg-sticky: rgba(11, 13, 18, 0.92);
   --bg-sheet: #12161f;
+  --bg-glow-top: #202635;
+  --bg-glow-bottom: #07080c;
   --text: #f8f1df;
   --text-muted: #d7cdb4;
   --text-soft: #b8b1a0;
@@ -25,7 +36,7 @@
   --on-accent: #0b0d12;
 }
 
-:root[data-theme='light'] {
+[data-theme='light'] {
   color-scheme: light;
   background-color: #f6f1e7;
   color: #1c1f2a;
@@ -35,6 +46,8 @@
   --bg-card-strong: rgba(255, 255, 255, 0.98);
   --bg-sticky: rgba(246, 241, 231, 0.92);
   --bg-sheet: #ffffff;
+  --bg-glow-top: #ffffff;
+  --bg-glow-bottom: #f0e7da;
   --text: #1c1f2a;
   --text-muted: #3d4250;
   --text-soft: #4f5564;
@@ -47,6 +60,115 @@
   --on-accent: #ffffff;
 }
 
+/* Dracula, from the official palette at github.com/dracula/dracula-theme:
+   background #282a36, foreground #f8f8f2, selection #44475a, purple #bd93f9.
+   The accent tint is lighter than the other dark themes use because #bd93f9
+   has to stay readable as text on top of it. */
+[data-theme='dracula'] {
+  color-scheme: dark;
+  background-color: #282a36;
+  color: #f8f8f2;
+  --bg: #282a36;
+  --bg-soft: rgba(51, 54, 71, 0.9);
+  --bg-card: rgba(54, 57, 74, 0.9);
+  --bg-card-strong: rgba(45, 47, 62, 0.95);
+  --bg-sticky: rgba(40, 42, 54, 0.92);
+  --bg-sheet: #2f3140;
+  --bg-glow-top: #343746;
+  --bg-glow-bottom: #1e1f29;
+  --text: #f8f8f2;
+  --text-muted: #dfdfd8;
+  --text-soft: #c3c3ba;
+  --text-subtle: #a9aab8;
+  --accent: #bd93f9;
+  --accent-strong: #bd93f9;
+  --accent-soft: rgba(189, 147, 249, 0.14);
+  --accent-line: rgba(189, 147, 249, 0.6);
+  --border: rgba(248, 248, 242, 0.12);
+  --on-accent: #282a36;
+}
+
+/* Alucard is Dracula's official light counterpart: background #fffbeb,
+   foreground #1f1f1f, comment #6c664b, purple #644ac9. */
+[data-theme='alucard'] {
+  color-scheme: light;
+  background-color: #fffbeb;
+  color: #1f1f1f;
+  --bg: #fffbeb;
+  --bg-soft: rgba(255, 255, 255, 0.85);
+  --bg-card: rgba(255, 255, 255, 0.92);
+  --bg-card-strong: rgba(255, 255, 255, 0.98);
+  --bg-sticky: rgba(255, 251, 235, 0.92);
+  --bg-sheet: #ffffff;
+  --bg-glow-top: #fffef7;
+  --bg-glow-bottom: #f7f0d9;
+  --text: #1f1f1f;
+  --text-muted: #3b3a33;
+  --text-soft: #4f4c3f;
+  --text-subtle: #6c664b;
+  --accent: #644ac9;
+  --accent-strong: #644ac9;
+  --accent-soft: rgba(100, 74, 201, 0.16);
+  --accent-line: rgba(100, 74, 201, 0.55);
+  --border: rgba(31, 31, 31, 0.14);
+  --on-accent: #fffbeb;
+}
+
+/* Nord, from nordtheme.com: polar night #2e3440-#4c566a, snow storm
+   #d8dee9-#eceff4, frost #88c0d0. The nord3 grey is too dark to use for muted
+   text on nord0, so the text ramp stays inside the snow storm range. */
+[data-theme='nord'] {
+  color-scheme: dark;
+  background-color: #2e3440;
+  color: #eceff4;
+  --bg: #2e3440;
+  --bg-soft: rgba(59, 66, 82, 0.9);
+  --bg-card: rgba(59, 66, 82, 0.92);
+  --bg-card-strong: rgba(52, 58, 72, 0.96);
+  --bg-sticky: rgba(46, 52, 64, 0.92);
+  --bg-sheet: #3b4252;
+  --bg-glow-top: #3b4252;
+  --bg-glow-bottom: #242933;
+  --text: #eceff4;
+  --text-muted: #d8dee9;
+  --text-soft: #bfc9d9;
+  --text-subtle: #a7b2c4;
+  --accent: #88c0d0;
+  --accent-strong: #88c0d0;
+  --accent-soft: rgba(136, 192, 208, 0.14);
+  --accent-line: rgba(136, 192, 208, 0.6);
+  --border: rgba(236, 239, 244, 0.12);
+  --on-accent: #2e3440;
+}
+
+/* Solarized Light, from ethanschoonover.com/solarized: base3 #fdf6e3 through
+   base02 #073642, blue #268bd2. That blue only reaches 3.4:1 on base3, so
+   fills and accent text use darkened blues and the official value is kept for
+   the tint, where it sits behind text rather than under it. */
+[data-theme='solarized-light'] {
+  color-scheme: light;
+  background-color: #fdf6e3;
+  color: #073642;
+  --bg: #fdf6e3;
+  --bg-soft: rgba(255, 252, 244, 0.88);
+  --bg-card: rgba(255, 253, 247, 0.92);
+  --bg-card-strong: rgba(255, 253, 247, 0.98);
+  --bg-sticky: rgba(253, 246, 227, 0.92);
+  --bg-sheet: #fffdf7;
+  --bg-glow-top: #fffdf5;
+  --bg-glow-bottom: #f3ead2;
+  --text: #073642;
+  --text-muted: #44585f;
+  --text-soft: #4d6269;
+  --text-subtle: #586e75;
+  --accent: #1b6ca8;
+  --accent-strong: #155f96;
+  --accent-soft: rgba(38, 139, 210, 0.16);
+  --accent-line: rgba(27, 108, 168, 0.5);
+  --border: rgba(7, 54, 66, 0.14);
+  --on-accent: #fdf6e3;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -56,12 +178,12 @@
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  background: radial-gradient(circle at top, #202635 0%, var(--bg) 55%, #07080c 100%);
-  background-attachment: fixed;
-}
-
-:root[data-theme='light'] body {
-  background: radial-gradient(circle at top, #ffffff 0%, var(--bg) 55%, #f0e7da 100%);
+  background: radial-gradient(
+    circle at top,
+    var(--bg-glow-top) 0%,
+    var(--bg) 55%,
+    var(--bg-glow-bottom) 100%
+  );
   background-attachment: fixed;
 }
 
@@ -145,6 +267,121 @@ body {
   width: 20px;
   height: 20px;
   fill: currentColor;
+}
+
+/* ---------- theme picker ---------- */
+
+.theme-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* The detail bar carries a backdrop-filter, which makes it the containing
+   block for any fixed-position descendant. So the menu is anchored to the
+   button at every width instead of becoming a bottom sheet on phones the way
+   the filters drawer does. */
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 25;
+  width: max-content;
+  min-width: 220px;
+  max-width: min(280px, calc(100vw - 32px));
+  max-height: min(70dvh, 460px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-sheet);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.theme-menu-group {
+  display: grid;
+  gap: 2px;
+}
+
+.theme-menu-label {
+  padding: 8px 10px 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.theme-option:hover,
+.theme-option:focus-visible {
+  background: var(--accent-soft);
+}
+
+.theme-option[aria-checked='true'] {
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.theme-option-check {
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  flex-shrink: 0;
+  fill: currentColor;
+  opacity: 0;
+}
+
+.theme-option[aria-checked='true'] .theme-option-check {
+  opacity: 1;
+}
+
+/* Each swatch carries its own data-theme, so it inherits that palette's
+   variables and previews the real colours rather than a hardcoded copy. */
+.theme-swatch {
+  position: relative;
+  display: flex;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.theme-swatch:not(.theme-swatch-split)::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.theme-swatch-half {
+  flex: 1;
+  background: var(--bg);
 }
 
 /* ---------- layout ---------- */
@@ -568,9 +805,8 @@ input {
   transform: none;
 }
 
-.detail-bar .theme-toggle {
+.detail-bar .theme-picker {
   margin-left: auto;
-  flex-shrink: 0;
 }
 
 .detail-header {

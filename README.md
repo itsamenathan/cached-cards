@@ -7,7 +7,7 @@ Cached Cards is a fast, offline‑first PWA for card game rules. It loads all ru
 - 30 card game rules in Markdown with frontmatter
 - Instant search + player count + tag filtering
 - Mobile‑focused reading mode with back navigation
-- Light/Dark theme toggle
+- Theme picker: system, Cached Dark/Light, Dracula, Alucard, Nord, and Solarized Light
 
 ## Live Site
 - https://cachedcards.com
