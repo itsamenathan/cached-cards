@@ -12,20 +12,23 @@
     <meta name="apple-mobile-web-app-title" content="Cached Cards" />
     <script>
       // Resolve the theme before first paint. Without this the prerendered
-      // markup is always dark and light-mode users get a flash on every load.
+      // markup is always dark and users on any other theme get a flash on
+      // every load. The colour map below is substituted from src/themes.js by
+      // the theme bootstrap plugin in vite.config.js; if that ever fails the
+      // reference throws and we fall back to dark rather than to a broken page.
       ;(function () {
         try {
+          var colors = __THEME_COLORS__
           var stored = localStorage.getItem('cached-cards-theme')
-          var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
-              : matchMedia('(prefers-color-scheme: light)').matches
-                ? 'light'
-                : 'dark'
+          var theme = colors[stored]
+            ? stored
+            : matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light'
+              : 'dark'
           document.documentElement.setAttribute('data-theme', theme)
           document
             .getElementById('theme-color')
-            .setAttribute('content', theme === 'light' ? '#f6f1e7' : '#0b0d12')
+            .setAttribute('content', colors[theme])
         } catch (error) {
           document.documentElement.setAttribute('data-theme', 'dark')
         }

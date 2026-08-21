@@ -13,6 +13,18 @@ import { useNavigate, useParams } from 'react-router-dom'
 import matter from 'gray-matter'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import {
+  DEFAULT_DARK,
+  DEFAULT_LIGHT,
+  MODE_LABELS,
+  SYSTEM_THEME,
+  THEME_STORAGE_KEY,
+  normalizePreference,
+  resolveTheme,
+  themeColorFor,
+  themeLabel,
+  themesByMode,
+} from './themes.js'
 
 const PLAYER_FILTERS = ['Any', 2, 3, 4, 5, 6]
 const DESKTOP_WIDTH = 900
@@ -101,38 +113,204 @@ function MarkdownCell({ children, columnIndex = 0, style }) {
   )
 }
 
-function ThemeToggle({ theme, onToggle }) {
+// The swatch carries the id of the theme it is previewing, so it picks up that
+// palette's custom properties instead of repeating the colours in JavaScript.
+function ThemeSwatch({ themeId }) {
+  if (themeId === SYSTEM_THEME) {
+    return (
+      <span className="theme-swatch theme-swatch-split" aria-hidden="true">
+        <span className="theme-swatch-half" data-theme={DEFAULT_DARK} />
+        <span className="theme-swatch-half" data-theme={DEFAULT_LIGHT} />
+      </span>
+    )
+  }
+  return (
+    <span className="theme-swatch" data-theme={themeId} aria-hidden="true" />
+  )
+}
+
+function ThemeOption({ id, label, checked, onSelect }) {
   return (
     <button
-      className="theme-toggle"
-      onClick={onToggle}
-      aria-label={
-        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
-      }
+      type="button"
+      role="menuitemradio"
+      className="theme-option"
+      aria-checked={checked}
+      onClick={() => onSelect(id)}
     >
-      {theme === 'dark' ? (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-13.5a1 1 0 0 1 1 1V6a1 1 0 1 1-2 0V4.5a1 1 0 0 1 1-1Zm0 15a1 1 0 0 1 1 1v1.5a1 1 0 1 1-2 0V19.5a1 1 0 0 1 1-1ZM3.5 12a1 1 0 0 1 1-1H6a1 1 0 1 1 0 2H4.5a1 1 0 0 1-1-1Zm14.5 0a1 1 0 0 1 1-1h1.5a1 1 0 1 1 0 2H19a1 1 0 0 1-1-1ZM5.6 5.6a1 1 0 0 1 1.4 0l1.1 1.1a1 1 0 0 1-1.4 1.4L5.6 7a1 1 0 0 1 0-1.4Zm10.3 10.3a1 1 0 0 1 1.4 0l1.1 1.1a1 1 0 0 1-1.4 1.4l-1.1-1.1a1 1 0 0 1 0-1.4Zm2.5-10.3a1 1 0 0 1 0 1.4L17.3 8.1a1 1 0 1 1-1.4-1.4L17 5.6a1 1 0 0 1 1.4 0ZM8.1 15.9a1 1 0 0 1 0 1.4L7 18.4A1 1 0 0 1 5.6 17l1.1-1.1a1 1 0 0 1 1.4 0Z" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M21.4 13.6A9 9 0 1 1 10.4 2.6a7 7 0 0 0 11 11Z" />
-        </svg>
-      )}
+      <ThemeSwatch themeId={id} />
+      {label}
+      <svg className="theme-option-check" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9.55 17.6 4.4 12.45l1.4-1.4 3.75 3.75 8.65-8.65 1.4 1.4z" />
+      </svg>
     </button>
+  )
+}
+
+function ThemePicker({ preference, resolvedTheme, onSelect }) {
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef(null)
+  const buttonRef = useRef(null)
+  const menuRef = useRef(null)
+
+  const items = () => [
+    ...(menuRef.current?.querySelectorAll('.theme-option') ?? []),
+  ]
+
+  const close = ({ refocus = true } = {}) => {
+    setOpen(false)
+    if (refocus) buttonRef.current?.focus()
+  }
+
+  // A menu anchored to a button has to close when the pointer lands anywhere
+  // else, including on the other picker in the detail bar.
+  useEffect(() => {
+    if (!open) return undefined
+    const handleOutside = (event) => {
+      if (!rootRef.current?.contains(event.target)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleOutside)
+    document.addEventListener('touchstart', handleOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleOutside)
+      document.removeEventListener('touchstart', handleOutside)
+    }
+  }, [open])
+
+  // Opening from the keyboard has to land somewhere, and the theme already in
+  // use is the only sensible place to start.
+  useEffect(() => {
+    if (!open) return
+    const menu = menuRef.current
+    const checked = menu?.querySelector('[aria-checked="true"]')
+    ;(checked ?? menu?.querySelector('.theme-option'))?.focus()
+  }, [open])
+
+  const moveFocus = (target, from) => {
+    const options = items()
+    if (options.length === 0) return
+    const index = options.indexOf(from)
+    const next =
+      target === 'first'
+        ? 0
+        : target === 'last'
+          ? options.length - 1
+          : (index + target + options.length) % options.length
+    options[next]?.focus()
+  }
+
+  const handleMenuKeyDown = (event) => {
+    switch (event.key) {
+      case 'Escape':
+        event.preventDefault()
+        close()
+        break
+      case 'ArrowDown':
+        event.preventDefault()
+        moveFocus(1, event.target)
+        break
+      case 'ArrowUp':
+        event.preventDefault()
+        moveFocus(-1, event.target)
+        break
+      case 'Home':
+        event.preventDefault()
+        moveFocus('first')
+        break
+      case 'End':
+        event.preventDefault()
+        moveFocus('last')
+        break
+      case 'Tab':
+        close({ refocus: false })
+        break
+      default:
+        break
+    }
+  }
+
+  const handleSelect = (id) => {
+    onSelect(id)
+    close()
+  }
+
+  const currentLabel =
+    preference === SYSTEM_THEME
+      ? `System (${themeLabel(resolvedTheme)})`
+      : themeLabel(preference)
+
+  return (
+    <div className="theme-picker" ref={rootRef}>
+      <button
+        type="button"
+        className="theme-toggle"
+        ref={buttonRef}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={`Theme: ${currentLabel}`}
+        onClick={() => setOpen((value) => !value)}
+        onKeyDown={(event) => {
+          if (event.key === 'ArrowDown') {
+            event.preventDefault()
+            setOpen(true)
+          }
+        }}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3a9 9 0 0 0 0 18 1.5 1.5 0 0 0 1.5-1.5c0-.39-.15-.75-.4-1.02a1.5 1.5 0 0 1 1.1-2.48H16a5 5 0 0 0 5-5c0-4.42-4.03-8-9-8Zm-5.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Zm3.5 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z" />
+        </svg>
+      </button>
+      {open && (
+        <div
+          className="theme-menu"
+          role="menu"
+          aria-label="Theme"
+          ref={menuRef}
+          onKeyDown={handleMenuKeyDown}
+        >
+          <ThemeOption
+            id={SYSTEM_THEME}
+            label="System"
+            checked={preference === SYSTEM_THEME}
+            onSelect={handleSelect}
+          />
+          {Object.keys(MODE_LABELS).map((mode) => (
+            <div
+              key={mode}
+              className="theme-menu-group"
+              role="group"
+              aria-label={`${MODE_LABELS[mode]} themes`}
+            >
+              <span className="theme-menu-label" aria-hidden="true">
+                {MODE_LABELS[mode]}
+              </span>
+              {themesByMode(mode).map((theme) => (
+                <ThemeOption
+                  key={theme.id}
+                  id={theme.id}
+                  label={theme.label}
+                  checked={preference === theme.id}
+                  onSelect={handleSelect}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
 export default function App() {
   const isClient = typeof window !== 'undefined'
-  const getInitialTheme = () => {
-    if (!isClient) return 'dark'
-    const storedTheme = window.localStorage.getItem('cached-cards-theme')
-    if (storedTheme === 'light' || storedTheme === 'dark') return storedTheme
-    return window.matchMedia('(prefers-color-scheme: light)').matches
-      ? 'light'
-      : 'dark'
-  }
+  // What is stored is the preference, which may be 'system'. The theme that
+  // actually gets applied is derived from it on every render.
+  const getInitialPreference = () =>
+    isClient
+      ? normalizePreference(window.localStorage.getItem(THEME_STORAGE_KEY))
+      : SYSTEM_THEME
+  const getInitialPrefersLight = () =>
+    isClient && window.matchMedia('(prefers-color-scheme: light)').matches
   const getInitialRecentIds = () => {
     if (!isClient) return []
     try {
@@ -156,7 +334,8 @@ export default function App() {
   const [selectedTags, setSelectedTags] = useState([])
   const [recentIds, setRecentIds] = useState(getInitialRecentIds)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const [theme, setTheme] = useState(getInitialTheme)
+  const [themePreference, setThemePreference] = useState(getInitialPreference)
+  const [prefersLight, setPrefersLight] = useState(getInitialPrefersLight)
   const [viewMode, setViewMode] = useState('library')
   const [detailHighlight, setDetailHighlight] = useState(false)
   // Without IntersectionObserver there is no way to know when the heading
@@ -209,13 +388,24 @@ export default function App() {
   const detailRef = useRef(null)
   const detailTitleRef = useRef(null)
 
+  const theme = resolveTheme(themePreference, prefersLight)
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    window.localStorage.setItem('cached-cards-theme', theme)
+    window.localStorage.setItem(THEME_STORAGE_KEY, themePreference)
     document
       .getElementById('theme-color')
-      ?.setAttribute('content', theme === 'light' ? '#f6f1e7' : '#0b0d12')
-  }, [theme])
+      ?.setAttribute('content', themeColorFor(theme))
+  }, [theme, themePreference])
+
+  // Only matters while the preference is 'system', but the listener is cheap
+  // and leaving it unconditional avoids resubscribing on every theme change.
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: light)')
+    const handleChange = (event) => setPrefersLight(event.matches)
+    media.addEventListener('change', handleChange)
+    return () => media.removeEventListener('change', handleChange)
+  }, [])
 
   useEffect(() => {
     const handleBeforeInstall = (event) => {
@@ -398,10 +588,6 @@ export default function App() {
 
   const showIosButton = !installPrompt && !isInstalled && isIos() && isSafari()
 
-  const toggleTheme = () => {
-    setTheme((current) => (current === 'dark' ? 'light' : 'dark'))
-  }
-
   // Each rule page is the reason the site exists, so the game title is its h1
   // and the wordmark steps down rather than competing with it.
   const Wordmark = slug ? 'p' : 'h1'
@@ -436,7 +622,11 @@ export default function App() {
                 Install on iOS
               </button>
             )}
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            <ThemePicker
+              preference={themePreference}
+              resolvedTheme={theme}
+              onSelect={setThemePreference}
+            />
           </div>
         </header>
       )}
@@ -623,7 +813,11 @@ export default function App() {
                   {activeRule.title}
                 </span>
               )}
-              <ThemeToggle theme={theme} onToggle={toggleTheme} />
+              <ThemePicker
+                preference={themePreference}
+                resolvedTheme={theme}
+                onSelect={setThemePreference}
+              />
             </div>
           )}
           {activeRule ? (
