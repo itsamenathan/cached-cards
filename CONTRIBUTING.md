@@ -20,43 +20,76 @@ players: "2-6 players"
 min_players: 2
 max_players: 6
 difficulty: "Medium"
-category: "Matching"
-tags: ["classic", "partnership", "melding"]
+tags: ["rummy", "partnership"]
 deck: "Two standard 52-card decks + jokers"
 ---
 ```
 
-3) Write rules in a consistent, skimmable format:
+3) Write the rules using the standard section template:
 
 ```md
 # Game Name
 
-## Goal
-...
+One or two sentences in plain language: what kind of game this is, what it
+feels like to play, and roughly how long it takes. Assume the reader has
+never heard of it.
+
+## What You Need
+- **Players:** ...
+- **Deck:** ...
+- **Extras:** ...
+
+## Key Terms
+- **Term:** Plain-language definition of anything the rules below assume.
 
 ## Setup
-...
-
-## Turn Order
 1. ...
-2. ...
 
-## Special Rules
-...
+## How to Play
+1. ...
 
-## Scoring
-...
+## Scoring & Winning
+- ...
 
-## End
-...
+## Example
+A short concrete scenario showing one turn or one trick.
+
+## Variations
+- **Name:** what changes.
+
+## Tips for New Players
+- ...
 ```
+
+All eight `##` sections appear in every rule file, in that order. If a game
+has no scoring, `## Scoring & Winning` still explains how the game ends.
+Games with several phases use `###` subsections inside `## How to Play`
+(for example `### Bidding` and `### Trick play`) so the top-level shape
+stays identical everywhere.
+
+Rules are rendered with `react-markdown` plus `remark-gfm`, so GitHub-flavored
+tables are available. Use a table only for a genuine lookup grid — bid values,
+card point values, scoring combinations — and keep prose, steps, and anything
+with conditions in bullets or numbered lists. Tables scroll horizontally on
+narrow screens, so aim for short cell text and no more than about six columns.
+
+To put a table inside a numbered step, indent it three spaces so it stays part
+of that list item instead of breaking the numbering.
 
 4) No index update needed — all `rules/*.md` files are auto-loaded.
 
 ## Design Guidelines
-- Keep rules concise and easy to skim.
-- Use clear section headings and short bullet lists.
-- Avoid excessive formatting or long paragraphs.
+- Write for someone who has never played the game before. Define jargon in
+  `## Key Terms` before the rules use it, and say who deals, who goes first,
+  and which direction play moves.
+- Keep it skimmable at a table: short bullets, numbered steps for anything
+  sequential, bold for the term being defined.
+- Use the shared tag vocabulary rather than inventing new tags: `2-player`,
+  `betting`, `casino`, `classic`, `kids`, `matching`, `partnership`, `party`,
+  `rummy`, `shedding`, `solitaire`, `speed`, `trick-taking`.
+- Cite a reliable source when rules vary. [pagat.com](https://www.pagat.com/)
+  is the reference this project uses; put genuinely optional rules under
+  `## Variations` rather than presenting one group's house rules as standard.
 
 ## PWA Notes
 - Assets and rule files are bundled into the build for offline use.
@@ -64,6 +97,7 @@ deck: "Two standard 52-card decks + jokers"
 
 ## Pull Request Checklist
 - [ ] New rules include required frontmatter fields.
+- [ ] New rules follow the eight-section template, in order.
 - [ ] Rules render properly in the app.
 - [ ] Keep changes focused; avoid unrelated refactors.
 - [ ] Run `npm run build` if you change build or PWA behavior.

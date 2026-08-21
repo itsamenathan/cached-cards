@@ -562,6 +562,42 @@ select {
   gap: 6px;
 }
 
+.markdown .table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.markdown th,
+.markdown td {
+  padding: 9px 12px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.markdown thead th {
+  color: var(--text);
+  font-weight: 600;
+  background: var(--bg-card-strong);
+}
+
+.markdown td:first-child {
+  color: var(--text);
+}
+
+.markdown tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .onboarding {
   gap: 12px;
 }

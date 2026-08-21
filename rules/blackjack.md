@@ -1,6 +1,6 @@
 ---
 title: Blackjack
-short_description: Beat the dealer by getting close to 21 without going over.
+short_description: Get closer to 21 than the dealer without going over.
 players: 1-7 players
 min_players: 1
 max_players: 7
@@ -8,40 +8,61 @@ difficulty: Easy
 tags:
   - casino
   - betting
-deck: Standard 52-card (often multiple decks)
+deck: Standard 52-card (often 6-8 decks)
 ---
 # Blackjack
 
-## Goal
-Beat the dealer by getting as close to 21 as possible without busting.
-In blackjack, the **dealer** represents the house; players compare their hand against the dealer, not against each other.
+Blackjack is the most played casino card game in the world. Everyone at the table plays against the dealer, not against each other, and each decision comes down to one question: take another card, or stop? A hand takes under a minute.
+
+## What You Need
+- **Players:** 1-7 against one dealer.
+- **Deck:** One standard 52-card deck at home; casinos use 6 to 8 shuffled together.
+- **Extras:** Chips, counters, or anything else to bet with.
 
 ## Key Terms
+- **Dealer:** The house. Everyone compares their hand against the dealer's, never against other players.
 - **Hit:** Take another card.
-- **Stand:** Take no more cards.
-- **Double:** Double your bet for exactly one more card.
-- **Split:** Separate a pair into two hands.
-- **Bust:** Your hand total exceeds 21 and you lose the round.
-
+- **Stand:** Take no more cards and lock in your total.
+- **Bust:** Going over 21. You lose immediately, even if the dealer busts afterwards.
+- **Blackjack (natural):** An ace with any 10-value card in your first two cards.
+- **Soft hand:** A hand where an ace counts as 11 without busting - "soft 17" is ace plus 6.
+- **Push:** A tie with the dealer. Your bet comes back.
 
 ## Setup
-- Each player and the dealer receive two cards; one dealer card is face up.
+1. Every player places a bet before any cards are dealt.
+2. The dealer gives each player two cards face up.
+3. The dealer takes two cards for themselves, one face up and one face down.
 
-## Card Values
-- 2–10 = face value, face cards = 10, Aces = 1 or 11.
+## How to Play
+Card values: 2 through 10 are worth their number, jacks, queens, and kings are 10, and an ace is 11 unless that would bust you, in which case it is 1.
 
-## Player Actions
-- **Hit** to take another card.
-- **Stand** to hold.
-- Optional: **Double** (one more card), **Split** (pairs), **Surrender**.
+Starting to the dealer's left, each player finishes their hand before the next one begins:
 
-## Dealer Play
-- Dealer hits until 17 or higher (house rules vary on soft 17).
+1. **Hit** to take another card. You may keep hitting until you stand or bust.
+2. **Stand** to stop.
+3. **Double down:** double your bet and take exactly one more card, then stop automatically.
+4. **Split:** if your two cards are the same rank, put up a second equal bet and play them as two separate hands.
+5. **Surrender** (not offered everywhere): give up the hand and get half your bet back.
 
-## Example Hand
-You have 10 and 6 (16). You hit and receive a 4 (total 20), then stand.
+Once every player has finished, the dealer reveals their face-down card and plays by fixed rules - no choices at all. The dealer **must hit until reaching 17 or more**, then must stand. Whether the dealer hits a soft 17 depends on the house rules, and it is usually printed on the table.
 
-## End
-- Busts lose immediately. Otherwise highest total wins.
-- A natural blackjack usually beats any 21 and pays a bonus.
-- Ties with the dealer are usually a push (no win or loss).
+## Scoring & Winning
+- Bust and you lose your bet straight away.
+- If you did not bust, you win when your total beats the dealer's, or when the dealer busts.
+- A natural blackjack normally pays 3 to 2, so a 10-chip bet returns 15.
+- Any other win pays even money - 10 chips returns 10.
+- Equal totals are a push and your bet is returned.
+
+## Example
+You are dealt 10♠ and 6♦ for 16, and the dealer shows a 7. You hit and get the 4♣ for 20, then stand. The dealer turns over 17 and you win.
+
+## Variations
+- **Insurance:** when the dealer shows an ace you may bet half your stake that they have blackjack. It pays 2 to 1 but is a poor bet over time.
+- **Spanish 21, Pontoon, Double Exposure:** casino variants with different card removals and payouts.
+- **Home blackjack:** the deal usually rotates, and whoever holds the deal acts as the bank.
+
+## Tips for New Players
+- The dealer's face-up card is the key piece of information. Against a 2 through 6 the dealer busts often, so standing on a weak hand is reasonable. Against a 7 through ace, you usually need to improve.
+- Always split aces and 8s. Never split 10s or 5s.
+- Never take insurance as a beginner.
+- Basic strategy - a fixed chart of the correct play for every combination - is well documented and cuts the house edge to well under 1%.
