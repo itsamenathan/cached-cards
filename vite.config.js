@@ -18,6 +18,12 @@ if (process.env.GITHUB_SHA) {
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
+  // Emit rules/<slug>/index.html rather than rules/<slug>.html. The sitemap
+  // and canonical URLs both use the trailing-slash form, and the SEO
+  // postprocess step keys off this path.
+  ssgOptions: {
+    dirStyle: 'nested',
+  },
   test: {
     environment: 'jsdom',
     setupFiles: './src/test/setup.js',
@@ -44,7 +50,7 @@ export default defineConfig({
         scope: './',
         display: 'standalone',
         background_color: '#0b0d12',
-        theme_color: '#f8f1df',
+        theme_color: '#0b0d12',
         icons: [
           {
             src: 'icons/icon.svg',

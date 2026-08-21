@@ -9,13 +9,20 @@
   --bg-soft: rgba(16, 21, 33, 0.9);
   --bg-card: rgba(18, 22, 34, 0.9);
   --bg-card-strong: rgba(15, 18, 28, 0.95);
+  --bg-sticky: rgba(11, 13, 18, 0.92);
+  --bg-sheet: #12161f;
   --text: #f8f1df;
   --text-muted: #d7cdb4;
   --text-soft: #b8b1a0;
   --text-subtle: #a79f8c;
   --accent: #f2b27a;
+  /* Accent used as text needs its own value: the fill accent is too light to
+     read on a tinted background once the light palette is in play. */
+  --accent-strong: #f2b27a;
   --accent-soft: rgba(242, 178, 122, 0.2);
+  --accent-line: rgba(242, 178, 122, 0.6);
   --border: rgba(248, 241, 223, 0.12);
+  --on-accent: #0b0d12;
 }
 
 :root[data-theme='light'] {
@@ -26,13 +33,18 @@
   --bg-soft: rgba(255, 255, 255, 0.85);
   --bg-card: rgba(255, 255, 255, 0.92);
   --bg-card-strong: rgba(255, 255, 255, 0.98);
+  --bg-sticky: rgba(246, 241, 231, 0.92);
+  --bg-sheet: #ffffff;
   --text: #1c1f2a;
   --text-muted: #3d4250;
-  --text-soft: #5b6170;
-  --text-subtle: #6e7485;
+  --text-soft: #4f5564;
+  --text-subtle: #565c6b;
   --accent: #c96d28;
+  --accent-strong: #8a4413;
   --accent-soft: rgba(201, 109, 40, 0.18);
-  --border: rgba(28, 31, 42, 0.12);
+  --accent-line: rgba(138, 68, 19, 0.55);
+  --border: rgba(28, 31, 42, 0.14);
+  --on-accent: #ffffff;
 }
 
 * {
@@ -43,101 +55,769 @@
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   background: radial-gradient(circle at top, #202635 0%, var(--bg) 55%, #07080c 100%);
+  background-attachment: fixed;
 }
 
 :root[data-theme='light'] body {
   background: radial-gradient(circle at top, #ffffff 0%, var(--bg) 55%, #f0e7da 100%);
+  background-attachment: fixed;
 }
 
 #root {
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .app {
   min-height: 100vh;
-  padding: 20px 16px 32px;
+  min-height: 100dvh;
+  padding: 14px 16px calc(24px + env(safe-area-inset-bottom));
+  padding-left: calc(16px + env(safe-area-inset-left));
+  padding-right: calc(16px + env(safe-area-inset-right));
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
+
+/* ---------- header ---------- */
 
 .app-header {
   display: flex;
-  flex-direction: column;
-  gap: 18px;
-  background: var(--bg-card-strong);
-  border: 1px solid var(--border);
-  padding: 16px;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.app-header h1 {
-  font-size: 1.8rem;
+.wordmark {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
   letter-spacing: 0.02em;
 }
 
-.eyebrow {
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.3em;
-  color: var(--accent);
-}
-
 .subhead {
-  color: var(--text-muted);
-  max-width: 32ch;
-}
-
-.install-btn {
-  align-self: flex-start;
-  background: var(--accent);
-  border: none;
-  color: #0b0d12;
-  font-weight: 600;
-  padding: 10px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 10px 25px rgba(242, 178, 122, 0.25);
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  max-width: 34ch;
 }
 
 .header-actions {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+  flex-shrink: 0;
 }
 
-.theme-toggle {
-  width: 34px;
-  height: 34px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
+.install-btn {
+  background: var(--accent);
+  border: none;
+  color: var(--on-accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .install-btn:hover {
   transform: translateY(-2px);
 }
 
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* ---------- layout ---------- */
+
 .app-main {
   display: grid;
-  gap: 22px;
+  gap: 18px;
 }
+
+.library {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.library.hidden {
+  display: none;
+}
+
+/* Search stays reachable through a 4000px-tall library. It is full-bleed so
+   list content cannot slide through the side gutters underneath it. */
+.library-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0 -16px;
+  padding: 10px 16px;
+  background: var(--bg-sticky);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+input {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  min-height: 44px;
+}
+
+.library-topbar input {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px; /* anything smaller makes iOS Safari zoom on focus */
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ---------- recents ---------- */
+
+.recent-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.recent-row::-webkit-scrollbar {
+  display: none;
+}
+
+.recent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.recent-chip.active {
+  border-color: var(--accent-line);
+  color: var(--accent-strong);
+}
+
+.recent-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+/* ---------- filters ---------- */
+
+.filters-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 8, 12, 0.55);
+  z-index: 20;
+}
+
+.filters-drawer {
+  display: none;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+}
+
+.filters-drawer.open {
+  display: grid;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* A native select cannot be themed past its closed state, and the player
+   counts are a short fixed list, so they use the same chips as the tags. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+/* Six fixed options read as one segmented control rather than a ragged
+   wrap that strands the last chip on its own row. */
+.chip-row-even {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.chip-fixed {
+  min-width: 0;
+  padding: 8px 4px;
+}
+
+.chip.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.drawer-close {
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* On a phone the drawer used to push the whole list off-screen, so you could
+   not see what your taps were doing. It becomes a sheet over the results. */
+@media (max-width: 899px) {
+  .filters-drawer.open {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 21;
+    max-height: 78dvh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+    background: var(--bg-sheet);
+    padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .filters-drawer.open .drawer-close {
+    position: sticky;
+    bottom: 0;
+    background: var(--accent);
+    border-color: transparent;
+    color: var(--on-accent);
+    font-weight: 600;
+  }
+}
+
+@media (min-width: 900px) {
+  .filters-backdrop {
+    display: none;
+  }
+}
+
+/* ---------- library list ---------- */
+
+.library-list {
+  display: grid;
+  gap: 12px;
+}
+
+.rule-card {
+  text-align: left;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.rule-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-line);
+}
+
+.rule-card.active {
+  background: var(--bg-card-strong);
+  border-color: var(--accent-line);
+}
+
+.rule-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.rule-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.rule-card p {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.rule-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+}
+
+.rule-tags {
+  display: inline-flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rule-tag {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px dashed var(--border);
+  color: var(--text-soft);
+  text-transform: lowercase;
+}
+
+.difficulty {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* ---------- detail ---------- */
+
+/* On a phone the card chrome cost 40px of horizontal reading width for no
+   benefit, so the rules run full-bleed and only get a card on desktop. */
+.detail {
+  display: none;
+}
+
+.detail.active {
+  display: block;
+}
+
+/* A rule page gets one bar of its own instead of the site header stacked on
+   top of a lone back control: destination on the left, theme on the right,
+   and the game name taking over the label once the heading scrolls away. */
+.detail-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: -14px -16px 18px;
+  padding: 6px 10px 6px 4px;
+  background: var(--bg-sticky);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.back-button svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.back-label {
+  max-width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.2s ease, opacity 0.2s ease;
+}
+
+.detail-bar.condensed .back-label {
+  max-width: 0;
+  opacity: 0;
+}
+
+.back-button:hover,
+.back-button:active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.detail-bar-title {
+  min-width: 0;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.detail-bar.condensed .detail-bar-title {
+  opacity: 1;
+  transform: none;
+}
+
+.detail-bar .theme-toggle {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-header h1 {
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+
+.detail-header p {
+  color: var(--text-muted);
+}
+
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+
+.tag {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+/* ---------- markdown ---------- */
+
+.markdown {
+  display: grid;
+  gap: 14px;
+  color: var(--text-muted);
+}
+
+.markdown h2,
+.markdown h3 {
+  color: var(--text);
+}
+
+.markdown h2 {
+  font-size: 1.3rem;
+  margin-top: 8px;
+}
+
+.markdown h3 {
+  font-size: 1.05rem;
+}
+
+.markdown ul,
+.markdown ol {
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+}
+
+.markdown .table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.markdown th,
+.markdown td {
+  padding: 9px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.markdown thead th {
+  color: var(--text);
+  font-weight: 600;
+  background: var(--bg-card-strong);
+}
+
+.markdown td:first-child {
+  color: var(--text);
+}
+
+.markdown tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 899px) {
+  /* Cells used to be nowrap, which pushed the rightmost column - the points,
+     the payout, the example - off screen with no scrollbar to hint at it. */
+  .markdown th,
+  .markdown td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* Four columns or more cannot wrap into a phone width legibly, so each row
+     becomes a labelled block instead. */
+  .markdown .table-scroll.stacked {
+    overflow-x: visible;
+    border: none;
+    background: none;
+  }
+
+  .markdown .table-scroll.stacked thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .markdown .table-scroll.stacked table,
+  .markdown .table-scroll.stacked tbody,
+  .markdown .table-scroll.stacked tr,
+  .markdown .table-scroll.stacked td {
+    display: block;
+    width: 100%;
+  }
+
+  .markdown .table-scroll.stacked tr {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    padding: 6px 12px;
+    margin-bottom: 8px;
+  }
+
+  .markdown .table-scroll.stacked td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    text-align: right;
+  }
+
+  .markdown .table-scroll.stacked td:last-child {
+    border-bottom: none;
+  }
+
+  .markdown .table-scroll.stacked td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    text-align: left;
+    color: var(--text-subtle);
+    font-size: 0.82rem;
+  }
+
+  .markdown .table-scroll.stacked td:first-child {
+    font-weight: 600;
+  }
+}
+
+.onboarding {
+  gap: 12px;
+}
+
+.onboarding h1,
+.onboarding h2 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.onboarding .install-btn {
+  justify-self: flex-start;
+}
+
+.state {
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--bg-card);
+  color: var(--text-soft);
+  text-align: center;
+}
+
+/* ---------- modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 8, 12, 0.7);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 30;
+}
+
+.modal-card {
+  width: min(360px, 100%);
+  background: var(--bg-card-strong);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  display: grid;
+  gap: 12px;
+  color: var(--text);
+}
+
+.modal-card h3 {
+  font-size: 1.1rem;
+}
+
+.modal-card ol {
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+/* ---------- footer ---------- */
 
 .app-footer {
   margin-top: auto;
+  padding-top: 20px;
   display: flex;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   font-size: 0.85rem;
   color: var(--text-soft);
 }
@@ -193,447 +873,78 @@ body {
   fill: currentColor;
 }
 
-.app-main.detail-only {
-  grid-template-columns: 1fr;
-}
-
-.library.hidden {
-  display: none;
-}
-
-.detail.active {
-  display: block;
-}
-
-.library {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.library-topbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-}
-
-.search-field,
-.filter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-label {
-  font-size: 0.85rem;
-  color: var(--text-soft);
-}
-
-input,
-select {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 12px 14px;
-  border-radius: 12px;
-  font-size: 1rem;
-}
-
-.search-mini input {
-  width: 160px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-size: 0.9rem;
-}
-
-.filter-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.filter-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 0.75rem;
-}
-
-.filters-drawer {
-  display: none;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 16px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-}
-
-.filters-drawer.open {
-  display: grid;
-}
-
-.drawer-close {
-  justify-self: flex-start;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-soft);
-  cursor: pointer;
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(7, 8, 12, 0.7);
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  z-index: 20;
-}
-
-.modal-card {
-  width: min(360px, 100%);
-  background: var(--bg-card-strong);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 18px;
-  display: grid;
-  gap: 12px;
-  color: var(--text);
-}
-
-.modal-card h3 {
-  font-size: 1.1rem;
-}
-
-.modal-card ol {
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-  color: var(--text-muted);
-}
-
-.library-list {
-  display: grid;
-  gap: 12px;
-}
-
-.tag-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag-toggle {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text-soft);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: border 0.2s ease, color 0.2s ease, background 0.2s ease;
-}
-
-.tag-toggle.active {
-  background: var(--accent-soft);
-  border-color: rgba(242, 178, 122, 0.6);
-  color: var(--accent);
-}
-
-.recent-inline {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.recent-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-.recent-chip.active {
-  border-color: rgba(242, 178, 122, 0.7);
-  color: var(--accent);
-}
-
-.recent-initials {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-weight: 600;
-  font-size: 0.7rem;
-}
-
-.rule-card {
-  text-align: left;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: inherit;
-  cursor: pointer;
-  transition: transform 0.2s ease, border 0.2s ease, background 0.2s ease;
-}
-
-.rule-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(242, 178, 122, 0.35);
-}
-
-.rule-card.active {
-  background: var(--bg-card-strong);
-  border-color: rgba(242, 178, 122, 0.6);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
-}
-
-.rule-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 10px;
-}
-
-.rule-card h2 {
-  font-size: 1.3rem;
-}
-
-.rule-card p {
-  margin-top: 6px;
-  color: var(--text-muted);
-}
-
-.rule-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  font-size: 0.85rem;
-  color: var(--text-subtle);
-}
-
-.rule-tags {
-  display: inline-flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.rule-tag {
-  font-size: 0.7rem;
-  padding: 3px 8px;
-  border-radius: 999px;
-  border: 1px dashed var(--border);
-  color: var(--text-soft);
-  text-transform: lowercase;
-}
-
-.difficulty {
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.detail {
-  display: none;
-  background: var(--bg-card-strong);
-  border-radius: 20px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  min-height: 320px;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.detail.highlight {
-  border-color: rgba(242, 178, 122, 0.7);
-  box-shadow: 0 0 0 2px rgba(242, 178, 122, 0.2),
-    0 20px 40px rgba(0, 0, 0, 0.25);
-}
-
-.back-button {
-  margin-bottom: 16px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.detail-header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.detail-header h2 {
-  font-size: 1.8rem;
-}
-
-
-.pill-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.pill {
-  background: var(--accent-soft);
-  color: var(--accent);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 12px 0 18px;
-}
-
-
-.tag {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-}
-
-.markdown {
-  display: grid;
-  gap: 14px;
-  color: var(--text-muted);
-}
-
-.markdown h1,
-.markdown h2,
-.markdown h3 {
-  color: var(--text);
-}
-
-.markdown ul {
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-}
-
-.markdown ol {
-  padding-left: 18px;
-  display: grid;
-  gap: 6px;
-}
-
-.markdown .table-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-card);
-}
-
-.markdown table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.markdown th,
-.markdown td {
-  padding: 9px 12px;
-  text-align: left;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--border);
-}
-
-.markdown thead th {
-  color: var(--text);
-  font-weight: 600;
-  background: var(--bg-card-strong);
-}
-
-.markdown td:first-child {
-  color: var(--text);
-}
-
-.markdown tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.onboarding {
-  gap: 12px;
-}
-
-.onboarding h2 {
-  font-size: 1.8rem;
-}
-
-.state {
-  padding: 16px;
-  border-radius: 14px;
-  background: var(--bg-card);
-  color: var(--text-soft);
-  text-align: center;
-}
+/* ---------- desktop ---------- */
 
 @media (min-width: 900px) {
   .app {
-    padding: 40px 48px 60px;
+    padding: 32px 48px 48px;
+    gap: 20px;
   }
 
   .app-header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    background: var(--bg-card-strong);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    border-radius: 20px;
+  }
+
+  .wordmark {
+    font-size: 1.7rem;
+  }
+
+  .subhead {
+    font-size: 0.95rem;
   }
 
   .app-main {
     grid-template-columns: minmax(280px, 1fr) 1.4fr;
     align-items: start;
+    gap: 22px;
+  }
+
+  .library-topbar {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--bg-soft);
   }
 
   .detail {
     display: block;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+    background: var(--bg-card-strong);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    min-height: 320px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
+  .detail.highlight {
+    border-color: var(--accent-line);
+    box-shadow: 0 0 0 2px var(--accent-soft);
+  }
 
+  .detail-header h1 {
+    font-size: 1.8rem;
+  }
 
+  .markdown {
+    max-width: 68ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

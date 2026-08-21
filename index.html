@@ -6,7 +6,31 @@
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%icons/icon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f8f1df" />
+    <meta name="theme-color" id="theme-color" content="#0b0d12" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Cached Cards" />
+    <script>
+      // Resolve the theme before first paint. Without this the prerendered
+      // markup is always dark and light-mode users get a flash on every load.
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('cached-cards-theme')
+          var theme =
+            stored === 'light' || stored === 'dark'
+              ? stored
+              : matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+          document.documentElement.setAttribute('data-theme', theme)
+          document
+            .getElementById('theme-color')
+            .setAttribute('content', theme === 'light' ? '#f6f1e7' : '#0b0d12')
+        } catch (error) {
+          document.documentElement.setAttribute('data-theme', 'dark')
+        }
+      })()
+    </script>
     <meta
       name="description"
       content="Cached Cards is an offline-first library for card game rules."
