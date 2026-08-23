@@ -85,7 +85,7 @@ of that list item instead of breaking the numbering.
 - Keep it skimmable at a table: short bullets, numbered steps for anything
   sequential, bold for the term being defined.
 - Use the shared tag vocabulary rather than inventing new tags: `2-player`,
-  `betting`, `casino`, `classic`, `kids`, `matching`, `partnership`, `party`,
+  `betting`, `classic`, `kids`, `matching`, `partnership`, `party`,
   `rummy`, `shedding`, `solitaire`, `speed`, `trick-taking`.
 - Cite a reliable source when rules vary. [pagat.com](https://www.pagat.com/)
   is the reference this project uses; put genuinely optional rules under
