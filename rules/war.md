@@ -49,7 +49,6 @@ You flip a 9 and your opponent also flips a 9. Both of you deal three cards face
 ## Variations
 - **One card down:** place a single card face down in a war instead of three. Games finish much faster.
 - **Three or four players:** deal the deck out evenly; the highest card wins the round, and a tie between the top two triggers a war between just those players.
-- **Casino War:** the actual casino version, where you bet on the outcome against a dealer.
 
 ## Tips for New Players
 - There are no tips. There are no decisions to make - that is the point of the game.

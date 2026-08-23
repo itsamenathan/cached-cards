@@ -50,8 +50,8 @@ You move the red 6♦ onto the black 7♠, which frees the face-down card that w
 
 ## Variations
 - **Draw one vs draw three:** drawing a single card at a time makes the game far more winnable. Drawing three is the traditional version.
-- **Unlimited vs limited redeals:** casinos and scoring versions limit you to one or three passes through the stock.
-- **Vegas scoring:** you buy in for 52 and earn 5 per card that reaches a foundation.
+- **Limited redeals:** for a harder game, allow only one or three passes through the stock.
+- **Scored play:** give yourself 5 points for every card that reaches a foundation. Try to improve your score on the next deal.
 
 ## Tips for New Players
 - Always prefer a move that flips a face-down card over one that does not.
