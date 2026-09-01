@@ -153,10 +153,6 @@ function ThemePicker({ preference, resolvedTheme, onSelect }) {
   const buttonRef = useRef(null)
   const menuRef = useRef(null)
 
-  const items = () => [
-    ...(menuRef.current?.querySelectorAll('.theme-option') ?? []),
-  ]
-
   const close = ({ refocus = true } = {}) => {
     setOpen(false)
     if (refocus) buttonRef.current?.focus()
@@ -187,7 +183,9 @@ function ThemePicker({ preference, resolvedTheme, onSelect }) {
   }, [open])
 
   const moveFocus = (target, from) => {
-    const options = items()
+    const options = [
+      ...(menuRef.current?.querySelectorAll('.theme-option') ?? []),
+    ]
     if (options.length === 0) return
     const index = options.indexOf(from)
     const next =
@@ -360,7 +358,6 @@ export default function App() {
       const { data, content } = matter(raw)
       return {
         id: toSlug(filename),
-        slug: filename,
         title: data.title || 'Untitled',
         shortDescription: data.short_description || '',
         playersLabel: data.players || '',
@@ -546,16 +543,17 @@ export default function App() {
   }, [slug, isClient])
 
   // Stop the page behind a filter sheet from scrolling under your finger.
+  // The width is a dependency too: rotating to desktop with the sheet open
+  // must release the lock, not leave the page frozen.
+  const isSheet = isClient && window.innerWidth < DESKTOP_WIDTH
   useEffect(() => {
-    if (!isClient) return undefined
-    const isSheet = window.innerWidth < DESKTOP_WIDTH
     if (!filtersOpen || !isSheet) return undefined
     const previous = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = previous
     }
-  }, [filtersOpen, isClient])
+  }, [filtersOpen, isSheet])
 
   const openRule = (id) => {
     if (isClient && window.innerWidth < DESKTOP_WIDTH) {
@@ -586,11 +584,10 @@ export default function App() {
     )
   }
 
-  const showIosButton = !installPrompt && !isInstalled && isIos() && isSafari()
-
-  // Each rule page is the reason the site exists, so the game title is its h1
-  // and the wordmark steps down rather than competing with it.
-  const Wordmark = slug ? 'p' : 'h1'
+  // The UA never changes during a session, so sniffing once per mount is
+  // enough; recomputing it on every render would be wasted work.
+  const [isIosSafari] = useState(() => isIos() && isSafari())
+  const showIosButton = !installPrompt && !isInstalled && isIosSafari
 
   const activeFilterCount = [
     playerFilter !== 'Any',
@@ -603,7 +600,13 @@ export default function App() {
       {viewMode !== 'detail' && (
         <header className="app-header">
           <div className="brand">
-            <Wordmark className="wordmark">Cached Cards</Wordmark>
+            {/* Each rule page is the reason the site exists, so the game title
+                is its h1 and the wordmark steps down rather than competing. */}
+            {slug ? (
+              <p className="wordmark">Cached Cards</p>
+            ) : (
+              <h1 className="wordmark">Cached Cards</h1>
+            )}
             <p className="subhead">
               Rules ready for game night, even when the Wi-Fi isn&apos;t.
             </p>

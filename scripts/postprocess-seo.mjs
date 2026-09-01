@@ -24,23 +24,34 @@ const readRules = () => {
   return rules
 }
 
+// Frontmatter values land straight in HTML attributes and the <title>; a
+// title containing a quote or ampersand would otherwise break the tag.
+const escapeHtml = (value) =>
+  String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+
 const injectHead = (html, meta) => {
+  const title = escapeHtml(meta.title)
+  const description = escapeHtml(meta.description)
   const canonicalTag = `<link rel="canonical" href="${meta.url}" />`
   const ogTags = [
-    `<meta property="og:title" content="${meta.title}" />`,
-    `<meta property="og:description" content="${meta.description}" />`,
+    `<meta property="og:title" content="${title}" />`,
+    `<meta property="og:description" content="${description}" />`,
     `<meta property="og:type" content="${meta.type}" />`,
     `<meta property="og:url" content="${meta.url}" />`,
     `<meta property="og:image" content="${meta.image}" />`,
   ].join('\n    ')
 
-  const descriptionTag = `<meta name="description" content="${meta.description}" />`
+  const descriptionTag = `<meta name="description" content="${description}" />`
 
   const jsonLd = `<script type="application/ld+json">${JSON.stringify(meta.schema)}</script>`
 
   const headClose = '</head>'
   let next = html
-    .replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`)
+    .replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
     .replace(/<meta name="description"[^>]*>/, descriptionTag)
     .replace(/<meta property="og:title"[^>]*>[\s\S]*?<meta property="og:image"[^>]*>/, ogTags)
 

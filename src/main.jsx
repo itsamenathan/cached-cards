@@ -1,4 +1,6 @@
 import { registerSW } from 'virtual:pwa-register'
+// gray-matter pulls in a transitive dependency that expects a global Buffer,
+// which browsers do not provide. The polyfill is only needed for that parse.
 import { Buffer } from 'buffer'
 import { ViteReactSSG } from 'vite-react-ssg'
 import { routes } from './routes.jsx'
